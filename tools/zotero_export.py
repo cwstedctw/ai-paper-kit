@@ -1,8 +1,8 @@
 """從 Zotero 本機介面把一個文獻集匯出成 source/refs/refs.bib（不用裝外掛的接法）。
 
 用法：
-    python tools/zotero_export.py "文獻集名稱"           # 存到 source/refs/refs.bib
-    python tools/zotero_export.py "文獻集名稱" 別的路徑.bib
+    uv run tools/zotero_export.py "文獻集名稱"           # 存到 source/refs/refs.bib
+    uv run tools/zotero_export.py "文獻集名稱" 別的路徑.bib
 
 先決條件：Zotero 開著，而且在 Zotero 設定 → 進階 勾了
 「允許此電腦上的其他應用程式與 Zotero 通訊」。

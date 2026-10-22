@@ -1,11 +1,11 @@
 """開一篇新論文：把現在 source/ 的內容收進 examples/，再換上空白的骨架。不會刪掉任何東西。
 
-用法（在範本資料夾裡；Mac 用 python3）：
-    python tools/new_paper.py                     # 範例收進 examples/，source/ 換成空白骨架
-    python tools/new_paper.py --refs material/模擬/refs.bib
+用法（在範本資料夾裡；Windows、Mac 都一樣）：
+    uv run tools/new_paper.py                     # 範例收進 examples/，source/ 換成空白骨架
+    uv run tools/new_paper.py --refs material/模擬/refs.bib
                                                   # 研究模擬：書目換成這個檔（當成從 Zotero 匯出的）
-    python tools/new_paper.py --name 範例論文重算   # 收進 examples/ 的資料夾名字（不寫就用日期）
-    python tools/new_paper.py --name 模擬論文 --restore examples/範例論文重算
+    uv run tools/new_paper.py --name 範例論文重算   # 收進 examples/ 的資料夾名字（不寫就用日期）
+    uv run tools/new_paper.py --name 模擬論文 --restore examples/範例論文重算
                                                   # 現在的 source/ 收進 examples/模擬論文，
                                                   # 再把 examples/範例論文重算 那份「複製」回 source/（examples/ 裡那份還在）
 
@@ -31,7 +31,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source"
 SKEL = Path(__file__).resolve().parent / "skeleton"
-BUILD_HINT = "python build.py（Mac：python3 build.py）"
+BUILD_HINT = "uv run build.py"
 
 EMPTY_REFS = """% refs.bib：這篇論文的書目。
 % 在 Zotero 建這篇論文的文獻集，用 Better BibTeX 匯出、勾「保持更新」，存成這個檔（蓋掉這一份）。

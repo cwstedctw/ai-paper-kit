@@ -30,7 +30,7 @@ source/            原料：要改論文，就改這裡
   gnuplot/         畫圖腳本，一張圖一個 .gp      ← AI 改
   paper/           論文本文 main.tex             ← AI 寫
           │
-          │  python build.py（跟 AI 說「跑一次 build」）
+          │  uv run build.py（跟 AI 說「跑一次 build」）
           ▼
 output/            成品：每次 build 重做，不要手改
   numbers.tex      內文數字，一個數字一個代號
@@ -63,7 +63,7 @@ output/            成品：每次 build 重做，不要手改
 |---|---|---|
 | TeX | **MiKTeX**（打開「缺套件時自動安裝」） | **MacTeX**（約 6.4 GB，macOS 11 以上）；硬碟不夠改 BasicTeX（約 134 MB） |
 | 畫圖 | gnuplot | gnuplot（Homebrew） |
-| 統計 | Python 3＋numpy、pandas、scipy | 同左（指令是 python3） |
+| 統計 | **uv**：它會自己裝好 Python 和 numpy、pandas、scipy 等套件（放在範本資料夾的 `.venv/`，不動電腦原本的 Python） | 同左（Homebrew） |
 | 轉 Word | pandoc（需要時才裝） | pandoc（Homebrew） |
 
 在 AI 助手貼（Windows 版）：
@@ -71,17 +71,17 @@ output/            成品：每次 build 重做，不要手改
 > 請幫我裝寫論文要用的工具。每裝一個之前，先告訴我要裝什麼、從哪裡裝，我同意再裝；要我輸入電腦密碼時先停下來，我自己輸入。
 > 1. TeX：用 winget 裝 MiKTeX（winget install -e --id MiKTeX.MiKTeX），裝好後把「缺套件時自動安裝」設成「是」（不要選每次問我），你在背景跑的時候才不會卡住。
 > 2. gnuplot：用 winget 裝（winget install -e --id gnuplot.gnuplot）。裝好後打 gnuplot --version；如果找不到、或沒有印出版本就結束（winget 建的捷徑可能缺檔），請找出 gnuplot.exe 所在的 bin 資料夾，先告訴我你打算把它加進「使用者」的 PATH、會影響什麼，我同意再加；加完請我把 Codex／Claude 關掉重開，再打一次 gnuplot --version。
-> 3. Python：如果還沒有，用 winget 裝 Python 3；再執行 python -m pip install -r requirements.txt。
+> 3. uv：用 winget 裝（winget install -e --id astral-sh.uv）。裝好後請我把 Codex／Claude 關掉重開，再到範本資料夾執行 uv sync（第一次會下載 Python 和套件，要幾分鐘）。
 > 4. pandoc：winget install -e --id JohnMacFarlane.Pandoc。
-> 全部裝完，請一一執行 pdflatex --version、gnuplot --version、python --version、pandoc --version，把版本號列給我看。
+> 全部裝完，請一一執行 pdflatex --version、gnuplot --version、uv run python --version、pandoc --version，把版本號列給我看。
 
 Mac 版：
 
 > 請幫我裝寫論文要用的工具。每裝一個之前，先告訴我要裝什麼、從哪裡裝，我同意再裝；要我輸入電腦密碼時先停下來，我自己輸入。
 > 1. TeX：裝 MacTeX（brew install --cask mactex，或到 tug.org/mactex 下載，約 6.4 GB）。我的硬碟空間不夠的話，先問我要不要改裝 BasicTeX。
-> 2. 用 Homebrew 裝 gnuplot 和 pandoc（brew install gnuplot pandoc）；沒有 Homebrew 的話先告訴我。
-> 3. 執行 python3 -m pip install -r requirements.txt。
-> 全部裝完，請一一執行 pdflatex --version、gnuplot --version、python3 --version、pandoc --version，把版本號列給我看。
+> 2. 用 Homebrew 裝 gnuplot、pandoc 和 uv（brew install gnuplot pandoc uv）；沒有 Homebrew 的話先告訴我。
+> 3. 到範本資料夾執行 uv sync（第一次會下載 Python 和套件，要幾分鐘）。
+> 全部裝完，請一一執行 pdflatex --version、gnuplot --version、uv run python --version、pandoc --version，把版本號列給我看。
 
 **完成判準**：AI 列出四個版本號，沒有「找不到」。MacTeX 很大，建議前一天晚上裝。
 
@@ -109,7 +109,7 @@ Mac 版：
 - 你會看到：資料就是一張表。程式只讀它，不會改它。
 
 **練習 2　跑一次 build，看成品長出來**
-- 跟 AI 說：「請跑一次 build（執行 python build.py；Mac 用 python3），告訴我最後一行，再告訴我 output 資料夾裡多了哪些檔。」
+- 跟 AI 說：「請跑一次 build（執行 uv run build.py），告訴我最後一行，再告訴我 output 資料夾裡多了哪些檔。」
 - 你會看到：最後一行 `BUILD OK pages=9 undefined_cites=0 undefined_refs=0 refs=7 refs_without_doi=0 bib_warnings=0`。用 Excel 打開 `output/tables/table2.csv`：欄名有 published 的是論文印的數字，有 reproduced 的是程式重算的，兩欄一對並排；再打開 `output/main.pdf`。
 - 這一行怎麼看：pages＝頁數；undefined_cites＝找不到的引用（要是 0）；undefined_refs＝找不到的圖表編號（要是 0）；refs＝文獻篇數；refs_without_doi＝你標了「沒有 DOI」的篇數；bib_warnings＝書目缺欄位的警告（要是 0）。
 
@@ -187,14 +187,14 @@ Mac 版：
 第四節是改一篇**已經寫好**的論文。這一節反過來：研究內容只靠三樣原料（另外 AI 也會看範本裡的規則、工具和收起來的範例程式）：練習資料（`source/data/`）、13 篇文獻的書目（`material/模擬/refs.bib`）和一份研究構想（`material/模擬/研究構想.md`）。你一句一句說，AI 從開一篇新論文做到交稿前檢查，最後把原本的範例放回去。
 
 **做法**
-- 開新論文：第 0 步請 AI 執行 `python tools/new_paper.py --keep-data --refs material/模擬/refs.bib --name 範例論文重算`（Mac 用 `python3`）。現在的範例收進 `examples/範例論文重算/`（examples＝收起來的舊論文，隨時能打開參考；資料檔不會複製進去，一律留在 `source/data/`，免得多一個地方把資料推上 GitHub），`source/` 換成新論文的骨架：練習資料留著、書目換成模擬用的 13 篇、分析程式只算人數、論文只有各節標題。
-- 做完放回範例：第 9 步請 AI 執行 `python tools/new_paper.py --name 模擬論文 --restore examples/範例論文重算`。寫完的模擬論文收進 `examples/模擬論文/`，範例**複製**回 `source/`（`examples/範例論文重算/` 那份還在；不需要的話再自己刪）。
+- 開新論文：第 0 步請 AI 執行 `uv run tools/new_paper.py --keep-data --refs material/模擬/refs.bib --name 範例論文重算`。現在的範例收進 `examples/範例論文重算/`（examples＝收起來的舊論文，隨時能打開參考；資料檔不會複製進去，一律留在 `source/data/`，免得多一個地方把資料推上 GitHub），`source/` 換成新論文的骨架：練習資料留著、書目換成模擬用的 13 篇、分析程式只算人數、論文只有各節標題。
+- 做完放回範例：第 9 步請 AI 執行 `uv run tools/new_paper.py --name 模擬論文 --restore examples/範例論文重算`。寫完的模擬論文收進 `examples/模擬論文/`，範例**複製**回 `source/`（`examples/範例論文重算/` 那份還在；不需要的話再自己刪）。
 - 開始前：照第四節〈報到〉請 AI 讀 AGENTS.md 和 WORKFLOW.md；資料夾先存一版（commit），第 9 步才比得出 `source/` 有沒有完全回到原樣。實跑時另外先交代 AI「這次模擬不用紙條，直接做」。
 
 **實跑紀錄**：2026-10-22，我們在範本的**複本**裡照下面十句話實跑一次（AI 是 Claude，在雲端跑的 Claude Code）。十步全部 `BUILD OK`，PDF 頁數依序是 1 → 1 → 1 → 4 → 4 → 8 → 12 → 13 → 13 → 8（第 9 步放回原本的範例，所以回到 8 頁）。**那次用的是 10/22 上午的範本**：之後範本改了 Fisher 檢定的算法、文獻回報要附摘要原句、AI 聲明的提醒、資料不再複製進 examples/，原本的範例也變成 9 頁。你現在照做，第 3、6、7 步的過程和頁數可能跟紀錄不一樣，新版還沒完整重跑十步。實跑時另外先給 AI 一段開場說明（扮演老師身邊的 AI 助手、這次會錄下來做成教材、照 AGENTS.md 的規矩做），並交代「這次模擬不用紙條，直接做」：研究模擬不是練習，所以用這句，不用「今天是練習」。下面「你會看到」是那次的真實結果，引號裡是 AI 的原話（摘錄）。**資料是重建的練習資料，寫出來的稿子只能練習、不能投稿。**
 
 **第 0 步　開工、開一篇新論文**
-- 跟 AI 說：「我們來做研究模擬：只給資料和文獻，請你一步一步把論文寫出來。先執行 python tools/new_paper.py --keep-data --refs material/模擬/refs.bib --name 範例論文重算，把範例收進 examples/、開一篇新論文；再跑一次 build，告訴我最後一行。」
+- 跟 AI 說：「我們來做研究模擬：只給資料和文獻，請你一步一步把論文寫出來。先執行 uv run tools/new_paper.py --keep-data --refs material/模擬/refs.bib --name 範例論文重算，把範例收進 examples/、開一篇新論文；再跑一次 build，告訴我最後一行。」
 - 你會看到：`BUILD OK pages=1 undefined_cites=0 undefined_refs=0 refs=13 refs_without_doi=0 bib_warnings=0`。AI 說：「PDF 編出來了、只有 1 頁（骨架而已）；書目有 13 篇，都有 DOI、沒有缺欄位……分析程式目前只算了人數：N = 140。」
 - 你要看什麼：`refs=13` 代表書目換成模擬用的 13 篇了；原本的範例收在 `examples/範例論文重算/`，沒有被刪。
 
@@ -239,7 +239,7 @@ Mac 版：
 - 你要看什麼：每一條沒過的，逐條決定怎麼處理；資料資格、倫理資訊、不實的聲明、還沒解決的方法問題，處理好之前不能投稿。`bib_warnings=0` 只代表書目欄位不缺。
 
 **第 9 步　收起模擬論文，放回範例**
-- 跟 AI 說：「模擬做完了。請執行 python tools/new_paper.py --name 模擬論文 --restore examples/範例論文重算，把這篇收進 examples/、把原本的範例搬回來，再跑一次 build。」
+- 跟 AI 說：「模擬做完了。請執行 uv run tools/new_paper.py --name 模擬論文 --restore examples/範例論文重算，把這篇收進 examples/、把原本的範例搬回來，再跑一次 build。」
 - 你會看到：`BUILD OK pages=8 undefined_cites=0 undefined_refs=0 refs=7 refs_without_doi=0 bib_warnings=0`，回到原本的範例。AI 用 git 比對過，`source/` 跟模擬開始前完全一樣；它也說：「『搬回來』其實是複製回來：examples/範例論文重算/ 還在……不需要的話，老師可以自己刪掉，我不刪檔。」
 - 你要看什麼：頁數回到原本範例的頁數（現在的範本是 `pages=9`；那次實跑是 8）、`refs=7`，就是原本的範例。AI 貼的檔案清單裡出現 `\346\250\241…` 這種數字，是 git 把中文資料夾名稱印成代碼，檔案沒有壞。
 
@@ -297,7 +297,7 @@ Mac 版：
 
 **第 9 步　換期刊或出 Word**
 - 你自己做：把投稿須知存成文字檔放進 `material/`。
-- 跟 AI 說：「我要投的期刊是＿＿，投稿須知在 material/。請列出 main.tex 要改的地方（期刊範本、字數、引用格式、圖表規定），先列給我看。期刊只收 Word 的話，請執行 python build.py --docx，告訴我 Word 檔在哪裡、哪裡要人工檢查。」
+- 跟 AI 說：「我要投的期刊是＿＿，投稿須知在 material/。請列出 main.tex 要改的地方（期刊範本、字數、引用格式、圖表規定），先列給我看。期刊只收 Word 的話，請執行 uv run build.py --docx，告訴我 Word 檔在哪裡、哪裡要人工檢查。」
 - 你要檢查：Word 版的排版、表格、圖、引用格式要人工看一次。**每次產生都會蓋掉舊的 `output/main.docx`**，要在 Word 裡改，先另存到別的資料夾。PDF 是這條流程的排版基準；實際投稿交哪一種檔，照期刊規定。
 - 論文或文獻有中文：跟 AI 說「論文裡有中文，請照 WORKFLOW.md 第 5 步改用 xelatex，再跑一次 build」。只要改 main.tex 第一行，中文字型已經設好。
 

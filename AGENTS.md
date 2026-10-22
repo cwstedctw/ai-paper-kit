@@ -3,7 +3,7 @@
 > 在這個資料夾工作的 AI，開始前都要先讀這份。Codex 會直接讀這份；Claude 讀的是 `CLAUDE.md`，那份只有一行 `@AGENTS.md`，所以兩家照的是同一份規則。
 > 要改規則，只改這一份就好。
 > 這個資料夾是「研究小隊」加上一條論文流程：資料 → 分析 → 圖 → 文獻 → LaTeX → PDF（也能出 Word）。論文怎麼做，看 `WORKFLOW.md`。
-> **原料都在 `source/`，成品都在 `output/`。** 要改結果就改 `source/`，再跑 `python build.py`；`output/` 不手改。
+> **原料都在 `source/`，成品都在 `output/`。** 要改結果就改 `source/`，再跑 `uv run build.py`；`output/` 不手改。
 
 ## 誰是誰
 
@@ -137,7 +137,7 @@ team.md                  這個小隊平常用哪一種模式
 2. **文獻只從 refs.bib 來。** 每個 `\cite{}` 的 key 都要在 `source/refs/refs.bib` 裡。新文獻先加進 Zotero，讓 refs.bib 自動更新；不憑記憶寫作者、年份、DOI。描述一篇文獻，只寫摘要或原文真的有寫的事；讀不到摘要或原文，就不寫它說了什麼，標 ⚠️ 請老師補。
 3. **圖用 gnuplot 畫。** 一張圖一個 `source/gnuplot/*.gp`；資料表由 `analyze.py` 寫到 `output/figdata/`，腳本讀它，輸出檔一定叫 `figures/figN.tex`（N 是數字，Word 版靠這個名字換圖；build 在 `output/` 裡執行腳本，所以路徑從 `output/` 算起）。在 `main.tex` 用 `\input{figures/figN.tex}` 放進去，加 `\label`，內文用 `\ref` 提到它。不手改產生的圖。
 4. **原始資料不動，分析方法先定再跑。** `source/data/` 只讀；清理、轉換寫成程式。研究資料能不能放進來，看 `source/data/README.md` 的四個條件：Private 不等於可以放受試者資料。排除受試者（寫在 `analyze.py` 上面的 `EXCLUDE_IDS`）、處理離群值、只看某個子群，由老師決定並寫進 Methods；不為了顯著換統計方法。統計方法要跟研究設計相符，不確定先請老師問統計顧問。
-5. **改完要 build，不為了過 build 動手腳。** 改了任何東西就執行 `python build.py`，最後一行是 `BUILD OK` 才算做完；回報時把那一行貼給老師。失敗就照它說的做。不改條目類型、不編 DOI、不手改 `output/`；書目有錯，請老師回 Zotero 改。自動接力的隊員如果不能執行指令（Claude 的 `-p` 模式預設只准改檔），成品第一行的「注意」寫「還沒 build」，由領隊跑。
+5. **改完要 build，不為了過 build 動手腳。** 改了任何東西就執行 `uv run build.py`，最後一行是 `BUILD OK` 才算做完；回報時把那一行貼給老師。失敗就照它說的做。不改條目類型、不編 DOI、不手改 `output/`；書目有錯，請老師回 Zotero 改。自動接力的隊員如果不能執行指令（Claude 的 `-p` 模式預設只准改檔），成品第一行的「注意」寫「還沒 build」，由領隊跑。
 6. **結論的強度由老師決定。** 不把相關寫成因果，不誇大效果，不寫資料裡沒有的發現。
 7. **AI 使用聲明。** 照期刊規定寫進論文：寫出用了哪個 AI 工具、做什麼、老師怎麼把關；聲明裡每一句都要是真的做過的事。範本放在 `main.tex` 參考文獻前面那一節。
 8. **成品放哪裡。** 論文工作的成品就是直接改好的工作檔（`source/paper/main.tex`、`source/scripts/`、`source/gnuplot/`）；`workspace/outbox/` 放一份變更報告：改了哪些檔、為什麼、怎麼驗證的。大改之前，先請老師同意存一版（commit），改壞了可以退回。

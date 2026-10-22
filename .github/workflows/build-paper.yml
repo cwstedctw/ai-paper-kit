@@ -1,4 +1,4 @@
-# push 到 GitHub，雲端自動跑一次 python build.py，編出論文 PDF。
+# push 到 GitHub，雲端自動跑一次 uv run build.py，編出論文 PDF。
 # 到儲存庫的 Actions 頁面，點最新那一次，下面的 paper-pdf 就是 PDF。
 # ⚠️ 資料會在 GitHub 的雲端機器上被讀取；受試者資料能不能這樣處理，先確認 IRB 與學校規範。
 name: 編譯論文 PDF
@@ -7,6 +7,8 @@ on:
     paths:
       - "source/**"
       - "build.py"
+      - "pyproject.toml"
+      - "uv.lock"
       - ".github/workflows/build-paper.yml"
   workflow_dispatch:
 jobs:
@@ -26,13 +28,10 @@ jobs:
             sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
               texlive-xetex texlive-lang-chinese fonts-noto-cjk
           fi
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: 安裝 Python 套件
-        run: python -m pip install -r requirements.txt
+      - name: 安裝 uv（它照 pyproject.toml、uv.lock 裝 Python 和套件）
+        uses: astral-sh/setup-uv@v6
       - name: 跑整條流程
-        run: python build.py
+        run: uv run build.py
       - name: 把 PDF 放到可以下載的地方
         uses: actions/upload-artifact@v4
         with:

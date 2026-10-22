@@ -8,15 +8,15 @@
     output/main.pdf      論文            output/latex-log/ 排版過程的紀錄
 output/ 裡的東西每次 build 都會重做，不要手改；要改就改 source/。
 
-用法（在這個資料夾裡；Mac 和 Linux 把 python 換成 python3，Windows 也可以用 py）：
-    python build.py          # 產生 output/main.pdf
-    python build.py --docx   # 另外產生 output/main.docx（給只收 Word 的期刊或合作者）
+用法（在這個資料夾裡；Windows、Mac 都一樣）：
+    uv run build.py          # 產生 output/main.pdf（第一次會自動裝好 Python 和套件）
+    uv run build.py --docx   # 另外產生 output/main.docx（給只收 Word 的期刊或合作者）
 
 每一步失敗就停下來，印出是哪一步、去看哪個檔。最後一行是總結：
     BUILD OK pages=頁數 undefined_cites=找不到的引用 undefined_refs=找不到的圖表編號 refs=文獻篇數
              refs_without_doi=標了 nodoi 的篇數 bib_warnings=書目缺欄位的警告
 undefined_cites、undefined_refs 一定是 0（不是 0 就不會 OK）；bib_warnings 不是 0 時，上面會列出缺什麼。
-Windows、Mac、Linux 都用同一支；需要 Python 套件（requirements.txt）、gnuplot、TeX（pdflatex 或 xelatex、bibtex）。
+Windows、Mac、Linux 都用同一支；需要 uv（它管 Python 和套件，清單在 pyproject.toml）、gnuplot、TeX（pdflatex 或 xelatex、bibtex）。
 用哪個 TeX 引擎看 source/paper/main.tex 第一行 `% !TEX program = pdflatex`；論文或書目有中文就改成 xelatex。
 """
 import argparse
@@ -91,7 +91,7 @@ def check_tools(docx, eng):
     try:
         import numpy, pandas, scipy, statsmodels  # noqa: F401
     except ImportError as e:
-        fail(f"缺 Python 套件（{e.name}）。執行：python -m pip install -r requirements.txt（Mac：python3 -m pip …）")
+        fail(f"缺 Python 套件（{e.name}）。請改用 uv run build.py 執行（uv 會照 pyproject.toml 自動裝好）；還是缺的話執行 uv sync。")
     need("gnuplot", "Windows：winget install -e --id gnuplot.gnuplot，或到 gnuplot 官網下載安裝；裝好要能在終端機打 "
                     "gnuplot --version 看到版本。打了沒反應的話，把 gnuplot 安裝夾裡的 bin 資料夾加進使用者的 PATH，"
                     "再把 Codex／Claude 關掉重開。Mac：brew install gnuplot。")

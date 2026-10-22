@@ -1,0 +1,17 @@
+# 這個範本用到的 Python 套件。用 uv 管：第一次跑 `uv run build.py`，uv 會自己裝好 Python 和下面這些套件，
+# 裝在這個資料夾的 .venv/ 裡（不動電腦原本的 Python）。版本鎖在 uv.lock，每台電腦裝到的都一樣。
+# 要加套件，請 AI 執行 `uv add 套件名`（它會一起更新 uv.lock），不要用 pip。
+[project]
+name = "ai-paper-kit"
+version = "0.1.0"
+description = "AI 論文管線範本：分析 → gnuplot 畫圖 → LaTeX 編 PDF"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scipy>=1.10",
+    "statsmodels>=0.14",
+]
+
+[tool.uv]
+package = false  # 這是一個論文資料夾，不是要發布的套件

@@ -63,7 +63,7 @@ def fail(msg):
 
 # ---------- 讀資料 ----------
 if not DATA.exists():
-    fail(f"找不到資料 {DATA.relative_to(ROOT)}。還在練習的話，先執行 python tools/make_practice_data.py；"
+    fail(f"找不到資料 {DATA.relative_to(ROOT)}。還在練習的話，先執行 uv run tools/make_practice_data.py；"
          "已經放了自己的資料（檔名不同）的話，請改這支程式上面 DATA 那一行的檔名，不要產生練習資料。")
 try:
     df_all = pd.read_csv(DATA)

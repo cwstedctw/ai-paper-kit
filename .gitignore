@@ -2,6 +2,7 @@
 output/*
 !output/README.md
 __pycache__/
+.venv/
 
 # examples/ 裡收起來的舊論文：研究資料一律不推上 GitHub，只留欄位說明 README.md。
 # tools/new_paper.py 本來就不會把資料檔複製進 examples/，這兩行是第二道保險（例如有人手動複製進去）。

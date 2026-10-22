@@ -6,8 +6,8 @@
 
 ## 共通做法
 
-- **指令名稱**：Windows 用 `python`（或 `py`）；Mac、Linux 用 `python3`。下面寫 `python` 的地方，照電腦換。
-- **跑完整條流程**：`python build.py`（要 Word 加 `--docx`）。最後一行是 `BUILD OK pages=… undefined_cites=0 undefined_refs=0 refs=… refs_without_doi=… bib_warnings=…`：頁數、找不到的引用（一定是 0）、找不到的圖表編號（一定是 0）、文獻篇數、標了 `nodoi` 的篇數、書目缺欄位的警告。頁數和文獻數看論文而定，不是錯；`bib_warnings` 不是 0，把上面列出的警告給老師看。失敗時最後一行是 `BUILD FAILED: 原因`。
+- **指令名稱**：一律用 uv 跑：`uv run build.py`、`uv run tools/<程式>.py`，Windows、Mac 寫法一樣。uv 會照 `pyproject.toml`／`uv.lock` 在這個資料夾的 `.venv/` 裝好 Python 和套件，不動電腦原本的 Python。要加套件：`uv add 套件名`（先問老師），不要用 pip。電腦還沒有 uv：照 README 第三節請老師同意後安裝。
+- **跑完整條流程**：`uv run build.py`（要 Word 加 `--docx`）。最後一行是 `BUILD OK pages=… undefined_cites=0 undefined_refs=0 refs=… refs_without_doi=… bib_warnings=…`：頁數、找不到的引用（一定是 0）、找不到的圖表編號（一定是 0）、文獻篇數、標了 `nodoi` 的篇數、書目缺欄位的警告。頁數和文獻數看論文而定，不是錯；`bib_warnings` 不是 0，把上面列出的警告給老師看。失敗時最後一行是 `BUILD FAILED: 原因`。
 - **不為了過 build 動手腳**：不改條目類型、不編 DOI、不手改 `output/`、不刪引用。照 `BUILD FAILED` 的訊息做；要改書目，就請老師回 Zotero 改。
 - **回報**一律包含：改了哪些檔、build 最後一行、要老師決定的事。
 - **紙條與變更報告**：會改檔的工作照 `AGENTS.md` 寫紙條；論文工作的成品是直接改好的工作檔，`workspace/outbox/` 放變更報告（改了哪些檔、為什麼、怎麼驗證）。
@@ -17,10 +17,10 @@
 ## 開一篇新論文（或做研究模擬）
 
 - 老師可能說：「我要開始寫自己的論文」或「我們來做研究模擬」。
-- 你怎麼做：先請老師同意，再執行 `python tools/new_paper.py`。它把現在的 `source/` 收進 `examples/<名字>/source/`（不刪任何東西），換上骨架：`scripts/analyze.py` 只算人數、`paper/main.tex` 只有各節標題和說明、`gnuplot/` 空的。
+- 你怎麼做：先請老師同意，再執行 `uv run tools/new_paper.py`。它把現在的 `source/` 收進 `examples/<名字>/source/`（不刪任何東西），換上骨架：`scripts/analyze.py` 只算人數、`paper/main.tex` 只有各節標題和說明、`gnuplot/` 空的。
   - **研究資料不會被收進 `examples/`**：`source/data/` 的資料檔原地留著，`examples/` 裡只放一份 `data/README.md`（欄位說明）。`examples/` 會跟著推上 GitHub，多一份資料就多一個外流的地方；`.gitignore` 也擋了 `examples/` 裡的資料檔。不要自己把資料複製進 `examples/`。
   - `--refs <檔>`：書目換成這個檔。研究模擬用 `--keep-data --refs material/模擬/refs.bib`（`--keep-data` 是舊寫法，資料本來就會留著，加了也能跑），研究構想在 `material/模擬/研究構想.md`。
-  - 想回到舊的那份：`python tools/new_paper.py --name <現在這份的名字> --restore examples/<舊的名字>`。這是**複製回** `source/`，`examples/` 裡那份還在；現在這份先收進 `examples/<現在這份的名字>/`；`source/data/` 的資料檔照舊留著。跑完照它的提示 build：`python build.py`（Mac：`python3 build.py`）。
+  - 想回到舊的那份：`uv run tools/new_paper.py --name <現在這份的名字> --restore examples/<舊的名字>`。這是**複製回** `source/`，`examples/` 裡那份還在；現在這份先收進 `examples/<現在這份的名字>/`；`source/data/` 的資料檔照舊留著。跑完照它的提示 build：`uv run build.py`。
 - 骨架也能 build：沒有圖就跳過畫圖，沒有引用就跳過 BibTeX，會編出一頁 PDF。
 - 之後照下面第 1–8 步，一節一節做；`examples/` 裡的範例可以參考寫法（分析程式、gnuplot 腳本、表格），但不要把範例的數字或句子搬進新論文。
 
@@ -51,7 +51,7 @@
 |---|---|---|
 | **A. 自動匯出（推薦）** | 老師先把 Zotero 更新到最新版，到 Better BibTeX 官網（retorque.re/zotero-better-bibtex）下載 `.xpi` 檔（用 Firefox 下載要按右鍵另存），在 Zotero 選「工具 → 外掛（Tools → Plugins）」→ 齒輪 →「從檔案安裝（Install Plugin From File）」。之後文獻集按右鍵「匯出文獻集（Export Collection）」→ 格式選 Better BibTeX、勾「保持更新（Keep updated）」→ 存成 `source/refs/refs.bib`。老師在 Zotero 加文獻，refs.bib 自己更新。 | 檢查 refs.bib：筆數、cite key、缺 DOI 的 |
 | **B. 你操作 Zotero** | 老師同意後，先裝 uv，再裝 zotero-mcp（`uv tool install zotero-mcp-server`），照它的說明接上。之後你可以搜老師的文獻庫。用 DOI 把文獻加進文獻集（例如 `zotero_add_by_doi`）是**寫入**：要 Zotero 開著，而且要照 zotero-mcp 的說明另外授權（新版 Zotero 例如 `zotero-mcp authorize-local`；舊版要 Zotero 網頁的 API key）。版本與設定以 zotero-mcp 官方說明為準。 | 加文獻前先列給老師看 |
-| **C. 不裝外掛** | Zotero 開著，執行 `python tools/zotero_export.py "文獻集名稱"`，直接跟電腦上開著的 Zotero 拿書目，存成 refs.bib（超過 100 筆會自動分頁拿完）。 | 執行、回報匯出幾筆 |
+| **C. 不裝外掛** | Zotero 開著，執行 `uv run tools/zotero_export.py "文獻集名稱"`，直接跟電腦上開著的 Zotero 拿書目，存成 refs.bib（超過 100 筆會自動分頁拿完）。 | 執行、回報匯出幾筆 |
 
 B 和 C 都要老師先在 Zotero：設定 → 進階，勾「允許此電腦上的其他應用程式與 Zotero 通訊（Allow other applications on this computer to communicate with Zotero）」。
 
@@ -111,14 +111,14 @@ B 和 C 都要老師先在 Zotero：設定 → 進階，勾「允許此電腦上
 ## 第 6 步：編出 PDF
 
 - 老師可能說：「跑一次 build。」
-- 你怎麼做：`python build.py`。它依序：0 檢查工具 → 1 分析 → 2 畫圖 → 3 檢查文獻 → 4 編 PDF。
+- 你怎麼做：`uv run build.py`。它依序：0 檢查工具 → 1 分析 → 2 畫圖 → 3 檢查文獻 → 4 編 PDF。
 - 失敗時照 `BUILD FAILED` 後面的原因處理：
 
 | 訊息 | 處理 |
 |---|---|
-| 缺 Python 套件 | `python -m pip install -r requirements.txt`（先問老師） |
+| 缺 Python 套件 | 確認是用 `uv run build.py` 跑的；還是缺就 `uv sync`（先問老師）。不要用 pip |
 | 找不到 gnuplot／pdflatex／xelatex／bibtex | 照 README 第三節請老師同意後安裝；Windows 裝好 gnuplot 還是找不到，多半是沒加進 PATH |
-| 找不到資料 | 還在練習：執行 `python tools/make_practice_data.py`。**已經放了真資料**（檔名不同）：改 `source/scripts/analyze.py` 的 `DATA` 那一行，不要產生練習資料 |
+| 找不到資料 | 還在練習：執行 `uv run tools/make_practice_data.py`。**已經放了真資料**（檔名不同）：改 `source/scripts/analyze.py` 的 `DATA` 那一行，不要產生練習資料 |
 | 資料不是 UTF-8 | 請老師用 Excel 另存成「CSV UTF-8（逗號分隔）」 |
 | 引用代號在 refs.bib 裡找不到 | 請老師把文獻加進 Zotero；代號打錯就改 main.tex。不要自己寫進 refs.bib |
 | 期刊論文沒有 DOI | 請老師回 Zotero 補；真的沒有，請老師在 Zotero 加標籤 `nodoi` |
@@ -133,7 +133,7 @@ B 和 C 都要老師先在 Zotero：設定 → 進階，勾「允許此電腦上
 - 老師可能說：「期刊只收 Word。」
 - 你怎麼做：
   1. 資料夾裡還是範例資料的話，先提醒：「這是練習資料，不是原始資料，不能投稿。」
-  2. `python build.py --docx`，產生 `output/main.docx`（圖換成 PNG，引用由 pandoc 排）。
+  2. `uv run build.py --docx`，產生 `output/main.docx`（圖換成 PNG，引用由 pandoc 排）。
   3. 打開 docx 跟 PDF 對照，列出要人工檢查的地方：引用格式、表格、圖說編號、標題頁、行距字型。
 - 提醒老師：每次產生都會蓋掉舊的 `main.docx`，要在 Word 裡改先另存新檔名；正式稿以 PDF 為準。
 

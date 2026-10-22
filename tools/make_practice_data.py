@@ -12,7 +12,7 @@
 來源（完整書目見 source/refs/refs.bib 的 Su2021）：BMC Geriatrics 2021;21:126.
 https://doi.org/10.1186/s12877-021-02075-3（CC BY 4.0）
 
-用法（在範本資料夾裡；Mac 用 python3）：python tools/make_practice_data.py
+用法（在範本資料夾裡）：uv run tools/make_practice_data.py
 會讀 source/data/published_values.csv，寫出 source/data/study_data.csv。
 範本已經附上產好的 study_data.csv，平常不用重跑；只有檔案不見了才需要。
 
