@@ -2,7 +2,8 @@
 
 平常不用自己打：跟 AI 說「跑一次 build」，AI 會執行這支。
 
-原料都在 source/（資料、書目、分析程式、gnuplot 腳本、論文本文），成品都寫到 output/：
+原料都在 source/（資料、書目、分析程式、gnuplot 腳本、論文本文；你用 Excel 做的表放 source/tables/、
+畫圖資料放 source/figdata/，都存成「CSV UTF-8」），成品都寫到 output/：
     output/numbers.tex   內文數字        output/tables/    表（.tex 給 PDF、.csv 給 Excel）
     output/figdata/      畫圖用的資料表  output/figures/   gnuplot 畫好的圖
     output/main.pdf      論文            output/latex-log/ 排版過程的紀錄
@@ -118,6 +119,62 @@ def analysis():
     if r.returncode != 0:
         print(r.stderr)
         fail("資料分析出錯，看上面的錯誤訊息。")
+
+
+LATEX_SPECIAL = {"\\": r"\textbackslash{}", "&": r"\&", "%": r"\%", "$": r"\$", "#": r"\#", "_": r"\_",
+                 "{": r"\{", "}": r"\}", "~": r"\textasciitilde{}", "^": r"\textasciicircum{}",
+                 "<": r"\ensuremath{<}", ">": r"\ensuremath{>}"}
+
+
+def read_excel_csv(path):
+    """讀 Excel 存的 CSV（「CSV UTF-8（逗號分隔）」，開頭可能有 BOM）。"""
+    import csv
+    try:
+        with open(path, encoding="utf-8-sig", newline="") as f:
+            return [row for row in csv.reader(f) if any(c.strip() for c in row)]
+    except UnicodeDecodeError:
+        fail(f"{path.relative_to(ROOT).as_posix()} 不是 UTF-8。用 Excel 另存新檔，存檔類型選「CSV UTF-8（逗號分隔）」，再放回來。")
+
+
+def csv_to_latex(rows):
+    """第一列當欄名，其餘每列一行；第一欄靠左、其他置中。"""
+    def esc(s):
+        return "".join(LATEX_SPECIAL.get(ch, ch) for ch in s.strip())
+    width = max(len(r) for r in rows)
+    rows = [r + [""] * (width - len(r)) for r in rows]
+    lines = ["% 由 build.py 從 Excel 存的 CSV 轉成，不要手改；要改就改 source/tables/ 裡的 CSV",
+             "\\begin{tabular}{l" + "c" * (width - 1) + "}", "\\toprule",
+             " & ".join(esc(c) for c in rows[0]) + " \\\\", "\\midrule"]
+    lines += [" & ".join(esc(c) for c in r) + " \\\\" for r in rows[1:]]
+    lines += ["\\bottomrule", "\\end{tabular}", ""]
+    return "\n".join(lines)
+
+
+def excel_inputs(eng):
+    """老師用 Excel 做的檔：source/tables/*.csv 轉成 LaTeX 表格；source/figdata/*.csv 給 gnuplot 畫圖用。"""
+    tables = sorted((SRC / "tables").glob("*.csv")) if (SRC / "tables").is_dir() else []
+    figdata = sorted((SRC / "figdata").glob("*.csv")) if (SRC / "figdata").is_dir() else []
+    if not tables and not figdata:
+        return
+    step("1b/5 你用 Excel 做的檔（source/tables/ → output/tables/；source/figdata/ → output/figdata/）")
+    for kind, files, dest in (("表", tables, OUT / "tables"), ("畫圖資料", figdata, OUT / "figdata")):
+        dest.mkdir(parents=True, exist_ok=True)
+        for f in files:
+            target = dest / f.name
+            if target.exists():
+                fail(f"source/{dest.name}/{f.name} 跟分析程式產生的 output/{dest.name}/{f.name} 同名。請把你的檔改個名字（例如前面加 my_）。")
+            rows = read_excel_csv(f)
+            if not rows:
+                fail(f"source/{dest.name}/{f.name} 是空的。")
+            if kind == "表":
+                tex = csv_to_latex(rows)
+                if eng == "pdflatex" and any(re.search(r"[\u2e80-\u9fff\uff00-\uffef]", c) for r in rows for c in r):
+                    fail(f"source/tables/{f.name} 裡有中文。中文表格要用 xelatex 排：把 main.tex 第一行改成 % !TEX program = xelatex。")
+                (dest / (f.stem + ".tex")).write_text(tex, encoding="utf-8")
+                print(f"  {f.name} → output/tables/{f.stem}.tex（{len(rows) - 1} 列、{max(len(r) for r in rows)} 欄）；論文裡用 \\input{{tables/{f.stem}.tex}} 放進去")
+            else:
+                print(f"  {f.name} → output/figdata/{f.name}（gnuplot 腳本讀 figdata/{f.name}）")
+            shutil.copy(f, target)
 
 
 def figures(fmt="latex"):
@@ -281,6 +338,7 @@ def main():
             old_docx.unlink()
             print("（清掉了上次的 output/main.docx：這次沒有加 --docx，舊的 Word 檔數字會是舊的。）")
         analysis()
+        excel_inputs(eng)
         figures()
         n_refs, n_nodoi = check_refs(eng)
         pages, n_warn = latex(eng)

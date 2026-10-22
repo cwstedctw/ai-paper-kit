@@ -208,7 +208,7 @@ for scale in SCALES:
         else:
             p_diffs.append(f"{scale} at {tlabel.lower()} (reproduced {fmt(p, 4)}, published {p_pub})")
         for (g, gk), s in [(("intervention", "Int"), a), (("control", "Ctl"), b)]:
-            macros[f"{scale}{gk}{tname}Mean"] = fmt(s.mean(), 2)
+            macros[f"{scale}{gk}{tname}Mean"] = fmt(s.mean(), 2)  # 名字＝量表＋組別＋時間＋Mean，例：DKAS＋Int＋TOne＋Mean → DKASIntTOneMean（介入組第 12 週 DKAS 平均）
             macros[f"{scale}{gk}{tname}SD"] = fmt(s.std(ddof=1), 2)
         macros[f"{scale}{tname}Pstat"] = "\\ensuremath{p<0.001}" if pfmt(p) == "<0.001" else f"\\ensuremath{{p={pfmt(p)}}}"
         t2_tex.append(("ROW", tlabel, msd(a, 2), msd(b, 2), p_pub, pfmt(p)))

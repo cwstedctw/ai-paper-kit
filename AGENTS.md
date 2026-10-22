@@ -27,6 +27,8 @@ source/                  原料：要改論文，就改這裡
   refs/refs.bib          書目，由 Zotero 匯出，不手改
   scripts/analyze.py     分析程式：算出論文裡所有的數字、表格、畫圖用的資料表
   gnuplot/*.gp           gnuplot 畫圖腳本，一張圖一個檔
+  tables/*.csv           （選用）老師用 Excel 做的表，build 自動轉成 output/tables/同名.tex；不改它
+  figdata/*.csv          （選用）老師用 Excel 做的畫圖資料，build 複製到 output/figdata/；不改它
   paper/main.tex         論文本文（LaTeX）
 output/                  成品：build.py 每次重做，不手改，不推上 GitHub
   numbers.tex            內文數字（巨集）

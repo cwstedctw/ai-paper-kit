@@ -75,7 +75,7 @@ B 和 C 都要老師先在 Zotero：設定 → 進階，勾「允許此電腦上
      - 先問研究設計：分組是不是隨機的、以個人還是以機構為單位分組、量了幾次。統計方法要跟設計相符；不確定就請老師先問統計顧問，不要照抄範例（範例只做 t 檢定、卡方、Fisher 精確檢定、效果量，因為練習資料只能重現論文的摘要數字）。
      - 排除受試者（寫在 `analyze.py` 上面的 `EXCLUDE_IDS`）、處理離群值、只看某個子群，都由老師決定，並寫進 Methods。不為了顯著換方法。
   4. 同意後改 `source/scripts/analyze.py`：每個結果數字寫成 `output/numbers.tex` 裡的巨集（名字只能用英文字母，例如 `\DKASIntTOneMean`，不能有數字），表格寫成 `output/tables/tableN.tex`，同時寫一份 `tableN.csv` 讓老師用 Excel 核對。數字一律用程式裡的 `fmt()` 四捨五入（跟 SPSS、Excel 一樣，81.25 → 81.3）；p 值用 `pfmt()`（四捨五入到三位是 0.000 才寫 `<0.001`）。
-     - **類別變項的 Fisher 精確檢定，用 `analyze.py` 裡的 `fisher_exact()`（完整列舉），不要用 scipy 的 `stats.fisher_exact`**：超過 2×2 的表（例如婚姻狀況四類 × 兩組），scipy 預設用亂數模擬，每次 build 的 p 值都不一樣，build 也不會報錯。骨架的 `analyze.py`（`tools/skeleton/`，開新論文時會放進 `source/scripts/`）已經寫好這個函式。
+     - **類別變項的 Fisher 精確檢定，用 `analyze.py` 裡寫好的完整列舉函式，不要用 scipy 的 `stats.fisher_exact`**：超過 2×2 的表（例如婚姻狀況四類 × 兩組），scipy 預設用亂數模擬，每次 build 的 p 值都不一樣，build 也不會報錯。兩支 `analyze.py` 裡的函式名稱不一樣：骨架（`tools/skeleton/analyze.py`，開新論文時會放進 `source/scripts/`）叫 `fisher_exact()`，收任何列數 × 欄數的人數表；範例的 `source/scripts/analyze.py` 叫 `fisher_exact_2col()`，只收「類別 × 兩組」的表（每列兩個數）。
      - 表裡縮排的子項目寫 `\quad{}` 接標籤，不要寫 `\quad` 加空白：轉 Word 時 pandoc 會把後面的數字吃掉（「3-6 h」變「-6 h」）。
   5. 跑 build。
 - 怎麼驗證：
@@ -84,11 +84,19 @@ B 和 C 都要老師先在 Zotero：設定 → 進階，勾「允許此電腦上
 - 不要做：改 `source/data/` 的原始檔；清理資料一律寫進程式。
 - 數字變了（換資料、排除受試者），把用到這些數字的句子列給老師重讀：數字會自動更新，句子的解讀不會。
 
+## 第 3.5 步：老師用 Excel 做好的表
+
+- 老師可能說：「我在 source/tables/ 放了 my_table.csv，請把它放進論文。」
+- build 會把 `source/tables/*.csv`（Excel 另存的「CSV UTF-8」，第一列是欄名）自動轉成 `output/tables/同名.tex`（booktabs 表格），也複製一份 `.csv` 到 `output/tables/`。
+- 你怎麼做：在 `source/paper/main.tex` 該放的位置加 table 環境，`\caption`（照老師給的標題）、`\label`、`\input{tables/同名.tex}`，內文用 `\ref` 提到它；跑 build。**不手改 `output/tables/` 裡轉出來的檔，也不改老師的 CSV**；內容要改，請老師改 Excel 重存。
+- build 停下來的三種情況照它說的做：表裡有中文 → 改用 xelatex（`main.tex` 第一行）；不是 UTF-8 → 請老師用 Excel 另存成「CSV UTF-8」；跟分析程式產生的表同名 → 請老師改檔名。
+- 數字是老師手打進 Excel 的，跟 `analyze.py` 算出來的不一樣：在回報裡提醒老師「這張表的數字是手打的，沒有從資料自動算；資料改了它不會跟著變」。
+
 ## 第 4 步：gnuplot 畫圖
 
 - 老師可能說：「加一張圖：＿＿。」
 - 你怎麼做：
-  1. `source/scripts/analyze.py` 產生這張圖要的資料表 `output/figdata/figN_….csv`（CSV，第一列是欄名；老師也能用 Excel 打開）。
+  1. `source/scripts/analyze.py` 產生這張圖要的資料表 `output/figdata/figN_….csv`（CSV，第一列是欄名；老師也能用 Excel 打開）。**老師自己用 Excel 做好的畫圖資料**放在 `source/figdata/*.csv`，build 會原樣複製到 `output/figdata/`，腳本一樣讀 `figdata/檔名.csv`；這種不用改 analyze.py，也不要改老師的 CSV。
   2. 複製一個現有的 `source/gnuplot/*.gp` 改成新的。build 在 `output/` 裡執行腳本，所以路徑從 `output/` 算起：讀 `figdata/…csv`（加 `set datafile separator comma`，用 `every ::1` 跳過欄名那一列），**輸出檔名一定是 `figures/figN.tex`（PNG 版是 `figures/figN.png`）**，N 是數字；Word 版靠這個名字換圖。保留開頭那段 `fmt` 判斷。圖寬不超過 12 公分（論文版面的寬度）。
      - **每支 `.gp` 開頭都要有 `set encoding utf8`。** 不寫的話，Windows 版 gnuplot 會照電腦語系在圖檔寫進 `\inputencoding{cp1252}`，pdflatex 就編不過（2026-10-22 Windows 實測）。
   3. y 軸用 `set autoscale y` 加 `set offsets`，不要寫死範圍，換資料才不會把點切掉。
