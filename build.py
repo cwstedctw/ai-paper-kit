@@ -264,11 +264,17 @@ def latex(eng):
     step(f"4/5 編譯 PDF（{eng} → bibtex → {eng} ×2，在 output/ 裡排版）")
     shutil.copy(MAIN_TEX, OUT / "main.tex")
     shutil.copy(REFS, OUT / "refs.bib")
+    # 期刊範本檔（.cls、.bst、.sty、.clo）放在 source/paper/，排版時一起帶過去，排完收掉
+    styles = [f for f in MAIN_TEX.parent.iterdir() if f.suffix in (".cls", ".bst", ".sty", ".clo")]
+    for f in styles:
+        shutil.copy(f, OUT / f.name)
     LOGDIR.mkdir(parents=True, exist_ok=True)
     try:
         return compile_pdf(eng)
     finally:
         tidy()
+        for f in styles:
+            (OUT / f.name).unlink(missing_ok=True)
 
 
 def compile_pdf(eng):
@@ -282,6 +288,12 @@ def compile_pdf(eng):
         if r.returncode != 0:
             tail = "\n".join((r.stdout + r.stderr).splitlines()[-25:])
             print(tail)
+            gone = re.search(r"File `([^']+\.(?:sty|cls|bst))' not found", r.stdout + r.stderr)
+            if gone:
+                fail(f"這台電腦的 LaTeX 少了一個套件檔：{gone.group(1)}。"
+                     "Windows（MiKTeX）：請 AI 先執行 miktex packages update-package-database（更新套件清單；"
+                     "清單太舊時「缺套件時自動安裝」會找不到它），再跑一次 build。還是不行，就在 MiKTeX Console 按「Updates」更新。"
+                     "Mac（MacTeX 完整版）通常不會缺；缺的話請 AI 用 tlmgr 補裝。")
             fail(f"{cmd[0]} 失敗，完整紀錄在 output/latex-log/build-{i}.log。")
     log = (OUT / "main.log").read_text(encoding="utf-8", errors="replace")
     pages = re.search(r"Output written on main\.pdf \((\d+) page", log)
@@ -310,10 +322,51 @@ def compile_pdf(eng):
     return int(pages.group(1)), len(warns)
 
 
+def braced(tex, i):
+    """tex[i] 是 '{'：回傳對應 '}' 之後的位置，和括號裡的字。"""
+    depth = 0
+    for j in range(i, len(tex)):
+        if tex[j] == "{" and tex[j - 1] != "\\":
+            depth += 1
+        elif tex[j] == "}" and tex[j - 1] != "\\":
+            depth -= 1
+            if depth == 0:
+                return j + 1, tex[i + 1:j]
+    fail("main.tex 的大括號 { } 沒有配對好，請 AI 檢查。")
+
+
+def for_pandoc(tex):
+    """期刊範本自己定義的寫法（Springer Nature 的 \\abstract{}、\\keywords{}、\\bmhead{}、作者欄），
+    pandoc 看不懂會整段丟掉；先換成標準寫法再轉 Word。用 elsarticle 等範本時這裡什麼都不會改。"""
+    def swap(tex, cmd, make):
+        out, k = [], 0
+        for m in re.finditer(r"\\" + cmd + r"\*?(\[[^\]]*\])?(?=\{)", tex):
+            if m.start() < k:
+                continue
+            end, body = braced(tex, m.end())
+            out += [tex[k:m.start()], make(body)]
+            k = end
+        return "".join(out) + tex[k:]
+    tex = swap(tex, "abstract", lambda b: "\\begin{abstract}\n" + b + "\n\\end{abstract}")
+    tex = swap(tex, "keywords", lambda b: "\n\n\\textbf{Keywords:} " + b + "\n\n")
+    tex = swap(tex, "bmhead", lambda b: "\\subsection*{" + b + "}")
+    tex = swap(tex, "fnm", lambda b: b)
+    tex = swap(tex, "sur", lambda b: b)
+    authors = []
+    tex = swap(tex, "author", lambda b: authors.append(b) or "%AUTHOR%")
+    if authors:
+        tex = tex.replace("%AUTHOR%", "\\author{" + " \\and ".join(authors) + "}", 1).replace("%AUTHOR%", "")
+    affils = []
+    tex = swap(tex, "affil", lambda b: affils.append(re.sub(r"\\org\w+\{([^{}]*)\}", r"\1", b)) or "")
+    if affils:
+        tex = tex.replace("\\maketitle", "\\maketitle\n\n" + "\n\n".join(affils) + "\n\n", 1)
+    return tex.replace("\\backmatter", "")
+
+
 def docx():
     step("5/5 產生 Word 版（pandoc；只有加 --docx 才做）")
     figures("png")
-    tex = MAIN_TEX.read_text(encoding="utf-8")
+    tex = for_pandoc(MAIN_TEX.read_text(encoding="utf-8"))
     tex = re.sub(r"\\input\{figures/(fig\d+)\.tex\}", r"\\includegraphics[width=14cm]{figures/\1.png}", tex)
     tmp = OUT / "main-for-word.tex"
     tmp.write_text(tex, encoding="utf-8")
@@ -348,7 +401,7 @@ def main():
         fail(f"有檔案被別的程式開著，改不了：{e.filename}。先關掉 Excel、Word 或 PDF 閱讀器裡開著的 output 資料夾裡的檔，再跑一次。")
     extra = " docx=output/main.docx" if a.docx else ""
     if "During the preparation of this example" in MAIN_TEX.read_text(encoding="utf-8"):
-        print("\n  提醒：論文最後的 AI 使用聲明還是範例原文。寫自己的論文時，要改成你真的做過的事（README〈守住這四件事〉第 4 條）。")
+        print("\n  提醒：論文裡的 AI 使用聲明（範例放在 Methods 的 Use of AI tools）還是範例原文。寫自己的論文時，要改成你真的做過的事（README〈守住這四件事〉第 4 條）。")
     print(f"\nBUILD OK pages={pages} undefined_cites=0 undefined_refs=0 refs={n_refs} "
           f"refs_without_doi={n_nodoi} bib_warnings={n_warn}{extra}")
 

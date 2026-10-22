@@ -30,6 +30,7 @@ source/                  原料：要改論文，就改這裡
   tables/*.csv           （選用）老師用 Excel 做的表，build 自動轉成 output/tables/同名.tex；不改它
   figdata/*.csv          （選用）老師用 Excel 做的畫圖資料，build 複製到 output/figdata/；不改它
   paper/main.tex         論文本文（LaTeX）
+  paper/*.cls、*.bst      期刊官方範本檔（範例＝Springer Nature 的 sn-jnl.cls、sn-vancouver-num.bst）；build 自動帶去排版，不改它
 output/                  成品：build.py 每次重做，不手改，不推上 GitHub
   numbers.tex            內文數字（巨集）
   tables/                表：.tex 給 PDF、.csv 給 Excel

@@ -3,13 +3,16 @@
 %   下面的 \ifXeTeX 那段會自動載入中文字型）。
 % 這份是原料（source/）。build.py 會把它複製到 output/ 再排版，所以下面 \input 的
 % numbers.tex、tables/、figures/ 都是 output/ 裡由程式產生的檔。用 build.py 編，不要在 TeX 編輯器直接按編譯。
-% 範例：用重建的練習資料，重算原論文（書目 Su2021）的結果。換成自己的研究時，照 WORKFLOW.md 改。
-\documentclass[preprint,12pt]{elsarticle}
+% 範例：用重建的練習資料，重算原論文（書目 Su2021，刊在 BMC Geriatrics）的結果。換成自己的研究時，照 WORKFLOW.md 改。
+% 期刊範本：Springer Nature LaTeX template（2024 年 12 月版）。BMC Geriatrics 的投稿須知建議用它，
+%   章節照該刊 Research article 的規定（Background、Methods、Results、Discussion、Conclusions、Declarations）。
+%   範本檔 sn-jnl.cls、sn-vancouver-num.bst 放在同一個資料夾，是官方原檔（LPPL 授權），不要改。
+%   正式投稿時，選項再加 referee（雙倍行距）和 lineno（行號），照投稿須知。
+\documentclass[pdflatex,sn-vancouver-num]{sn-jnl}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{booktabs}
-\usepackage[hidelinks]{hyperref}
-\usepackage{color}
+\usepackage{xcolor}
 \usepackage{iftex}
 \ifXeTeX % 只有用 xelatex 編的時候才載入中文；pdflatex 會跳過這段
   \usepackage{xeCJK}
@@ -18,33 +21,31 @@
   \IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{% Windows：微軟正黑體
   \IfFontExistsTF{Songti TC}{\setCJKmainfont{Songti TC}}{}}}}% Mac：宋體-繁
 \fi
-\biboptions{sort&compress}
+\hypersetup{hidelinks}
 \input{numbers.tex}
 
-\journal{a workshop (worked example)}
-
 \begin{document}
-\begin{frontmatter}
 
-\title{Re-deriving the published results of a dementia care training study from reconstructed practice data: a worked example}
+\title[Re-deriving published results from reconstructed practice data]{Re-deriving the published results of a dementia care training study from reconstructed practice data: a worked example}
 
-\author{Author Name (placeholder)}
-\address{Worked example prepared for a research-team workshop on 28 October 2026; not for submission}
+\author[1]{\fnm{Author} \sur{Name (placeholder)}}
+\affil[1]{\orgname{Worked example prepared for a research-team workshop on 28 October 2026; not for submission}}
 
-\begin{abstract}
-\textbf{Background:} Being able to regenerate every number in a paper from data and code is a basic check of reproducible research.
-\textbf{Objective:} To show, with a published study as the example, how a scripted pipeline produces the tables, figures and in-text numbers of a paper and checks them against the published values. This is a teaching example; it is not a re-analysis or an audit of the original study.
-\textbf{Methods:} Practice data for \NTotal{} home care workers (\NInt{} intervention, \NCtl{} control) were reconstructed from Tables 1 and 2 of a published controlled study \cite{Su2021}, so that category counts, means and standard deviations agree with the published values. An analysis script recomputed the between-group $p$ values and Cohen's $d$ and compared them with the published values.
+\abstract{\textbf{Background:} Being able to regenerate every number in a paper from data and code is a basic check of reproducible research. This worked example uses a published study to show how a scripted pipeline produces the tables, figures and in-text numbers of a paper and checks them against the published values. It is a teaching example; it is not a re-analysis or an audit of the original study.
+
+\textbf{Methods:} Practice data for \NTotal{} home care workers (\NInt{} intervention, \NCtl{} control) were reconstructed from Tables 1 and 2 of a published controlled study of dementia care training, so that category counts, means and standard deviations agree with the published values. An analysis script recomputed the between-group $p$ values and Cohen's $d$ and compared them with the published values.
+
 \textbf{Results:} With the tests named in the original report, \TOneMatch{} of \TOneTotal{} baseline $p$ values and \PMatch{} of \PTotal{} outcome $p$ values were identical to the published values; Cohen's $d$ differed by at most \DMaxDiff{}.
+
 \textbf{Conclusions:} Summary-level results can be re-derived from reconstructed data. Results that depend on individual-level data, such as the published GEE estimates, need the original data set.
-\end{abstract}
 
-\begin{keyword}
-reproducible research \sep dementia care training \sep home care workers \sep reconstructed data \sep gnuplot
-\end{keyword}
-\end{frontmatter}
+\textbf{Trial registration:} Not applicable; no participants were recruited for this worked example.}
 
-\section{Introduction}
+\keywords{Reproducible research, Dementia care training, Home care workers, Reconstructed data, gnuplot}
+
+\maketitle
+
+\section{Background}
 For home care workers, looking after older adults with dementia is demanding work \cite{Su2021}. In a controlled study in eastern Taiwan, home care workers from one agency were given a 12-week programme that paired mobile e-learning with online and face-to-face mentoring, and were compared with workers from a second agency who attended conventional lectures; in GEE analyses, knowledge, attitudes and competence in dementia care improved, and the improvements were still present 12 weeks after the programme ended \cite{Su2021}. The same team later evaluated a virtual reality-based dementia training with peer support for home care workers in a cluster randomised controlled trial \cite{Sung2022}.
 
 Rerunning an analysis from its data and code has been proposed as a practical complement to full replication \cite{Peng2011}. In practice, every number in a paper should be traceable to data and code. This worked example uses that published report \cite{Su2021} to show such a pipeline: the numbers in the text and tables are written by an analysis script, the figures are drawn by gnuplot scripts, and each recomputed value is compared with the value printed in the original report.
@@ -60,7 +61,11 @@ Knowledge was measured with the 25-item Dementia Knowledge Assessment Scale (DKA
 This example uses only the published summary tables. A practice data set was reconstructed from the published summary statistics with \texttt{tools/make\_practice\_data.py}. Category counts reproduce the published Table 1 exactly. Means and standard deviations of age, years worked and the three scales at each time point round to the published values; for age and years worked, values were also chosen so that the $t$ test reproduces the published $p$ values. Correlations between a person's scores at different time points are not reported in the original paper and were set to 0.5. The reconstructed data are not the original data and must not be used for substantive conclusions.
 
 \subsection{Statistical analysis}
-Each baseline $p$ value was recomputed with a test named in the original report: Student's $t$ test for age and years worked (equal variances assumed), Fisher's exact test (Freeman--Halton extension, by full enumeration) for sex, marital status, job and in-service training, and the likelihood-ratio $\chi^2$ test for education and dementia training, with Pearson's $\chi^2$ test also reported for these two. Scores at each time point were compared between groups with the $t$ test. Cohen's $d$ was calculated as the mean difference divided by the pooled standard deviation \cite{Cohen2013}, with a 95\% confidence interval from its large-sample variance \cite{HedgesOlkin1985}. Every recomputed value was compared with the value printed in the original report. \ExcludedSentence{} Analyses used Python (pandas, SciPy), figures were drawn with gnuplot, and all numbers in this paper are written to \texttt{numbers.tex} by \texttt{source/scripts/analyze.py}. The analysis code was drafted with an AI coding assistant, and selected results were recomputed independently to check it.
+Each baseline $p$ value was recomputed with a test named in the original report: Student's $t$ test for age and years worked (equal variances assumed), Fisher's exact test (Freeman--Halton extension, by full enumeration) for sex, marital status, job and in-service training, and the likelihood-ratio $\chi^2$ test for education and dementia training, with Pearson's $\chi^2$ test also reported for these two. Scores at each time point were compared between groups with the $t$ test. Cohen's $d$ was calculated as the mean difference divided by the pooled standard deviation \cite{Cohen2013}, with a 95\% confidence interval from its large-sample variance \cite{HedgesOlkin1985}. Every recomputed value was compared with the value printed in the original report. \ExcludedSentence{} Analyses used Python (pandas, SciPy), figures were drawn with gnuplot, and all numbers in this paper are written to \texttt{numbers.tex} by \texttt{source/scripts/analyze.py}.
+
+% 照期刊規定改：BMC 規定用了 ChatGPT 這類 AI，要寫在 Methods 裡。寫出實際用了哪個 AI 工具、做什麼、你怎麼把關。每一句都要是真的做過的事。
+\subsection{Use of AI tools}
+During the preparation of this example, the author used Claude Code (Anthropic) to draft the analysis code, the figure scripts and parts of the text. Each citation was checked against its DOI record, every number was regenerated from the analysis script, and selected results were recomputed independently to check the code. The author reviewed and edited the content and takes full responsibility for it.
 
 \section{Results}
 \subsection{Baseline characteristics}
@@ -122,17 +127,35 @@ The practice data were reconstructed from rounded summary statistics and an assu
 \section{Conclusions}
 When data, code, tables and figures are linked, a change in the data or the analysis updates every number in the paper on the next build, and each value can be checked against its source.
 
-% 照期刊規定改：標題照期刊的寫法；寫出實際用了哪個 AI 工具、做什麼、你怎麼把關。每一句都要是真的做過的事。
-\section*{Declaration of generative AI and AI-assisted technologies in the writing process}
-During the preparation of this example, the author used Claude Code (Anthropic) to draft the analysis code, the figure scripts and parts of the text. Each citation was checked against its DOI record, and every number was regenerated from the analysis script. The author reviewed and edited the content and takes full responsibility for it.
+\backmatter
 
-\section*{Data availability}
+\bmhead{Abbreviations}
+ADQ: Approaches to Dementia Questionnaire; CI: confidence interval; DKAS: Dementia Knowledge Assessment Scale; GEE: generalised estimating equations; SCIDS: Sense of Competence in Dementia Care Staff scale; SD: standard deviation.
+
+% BMC 規定 Declarations 底下這幾個小標都要有；不適用的寫 Not applicable。標了 placeholder 的，寫自己的論文時一定要換成真的內容。
+\section*{Declarations}
+
+\bmhead{Ethics approval and consent to participate}
+Not applicable. This worked example used only published summary statistics and reconstructed practice data; no data were collected from human participants.
+
+\bmhead{Consent for publication}
+Not applicable.
+
+\bmhead{Availability of data and materials}
 The reconstructed practice data, the published values used for comparison and all code are in the project folders \texttt{source/data/}, \texttt{source/scripts/} and \texttt{source/gnuplot/}. The original study data are not included.
 
-\section*{Acknowledgements}
+\bmhead{Competing interests}
+Placeholder: declare all financial and non-financial competing interests, or state that the authors declare that they have no competing interests.
+
+\bmhead{Funding}
+Placeholder: list all sources of funding.
+
+\bmhead{Authors' contributions}
+Placeholder: describe each author's contribution, using initials.
+
+\bmhead{Acknowledgements}
 Published values are taken from \cite{Su2021}, an open-access article distributed under the Creative Commons Attribution 4.0 International License.
 
-\bibliographystyle{elsarticle-num}
 \bibliography{refs}
 
 \end{document}

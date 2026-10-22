@@ -113,7 +113,8 @@ B 和 C 都要老師先在 Zotero：設定 → 進階，勾「允許此電腦上
 - **新表要放在最後一張表後面**：LaTeX 依表在 `main.tex` 出現的順序編號。新表插在前面，會變成表 2、原本的表 2 變表 3，跟 `tableN` 檔名和內文對不上。
 - **寫到文獻的句子，自己逐句對摘要再交**：AI 很容易寫得比摘要多（例如把作者的結論寫成受訪者說的話、替「上面這些研究」做摘要沒寫的總結、沒引用的轉折句讀起來像結論）。`undefined_cites=0` 抓不到這種錯。
 - 回報：列出每一句講到文獻的：根據哪一篇、**摘要裡支持它的那一句原文**（照抄、不改字）；找不到支持的句子就改寫或刪掉，讀不到摘要的標 ⚠️。最後附 build 最後一行。
-- 換期刊：改 `\documentclass` 和最後的 `\bibliographystyle`，換成期刊提供的範本；`\input{numbers.tex}`、`\input{tables/...}`、`\input{figures/...}` 不用動。改之前先列給老師看。
+- 換期刊：先讀 `material/` 裡的投稿須知，照它的章節規定（例如 BMC 研究論文要有 Declarations 底下那幾個小標、AI 使用要寫在 Methods）改。期刊有自己的 LaTeX 範本時，請老師從官網下載，把 `.cls`、`.bst` 放進 `source/paper/`（build 會自動帶去排版；官方範本檔不改，有授權條款），再改 `\documentclass`；`\bibliographystyle` 看範本：有的範本自己設好了（範例的 sn-jnl 用 `sn-vancouver-num` 選項，main.tex 裡就不能再寫 `\bibliographystyle`，也不能另外載入 hyperref、natbib）。`\input{numbers.tex}`、`\input{tables/...}`、`\input{figures/...}` 不用動。改之前先列給老師看；換完跑 build，再跑一次 `--docx` 確認 Word 版的摘要、作者、各小標都還在（build.py 的 `for_pandoc()` 只認得 Springer Nature 範本的寫法，別的範本有自訂指令要補進去）。
+- 範例論文用的是 *BMC Geriatrics* 投稿須知建議的 Springer Nature LaTeX 範本（2024 年 12 月版，`sn-jnl.cls`＋`sn-vancouver-num.bst`，LPPL 授權）；開新論文的骨架（`tools/skeleton/main.tex`）用的是通用的 elsarticle。
 - **有中文**（中文論文，或英文論文引用了中文文獻）：把 `main.tex` 第一行改成 `% !TEX program = xelatex` 就好。中文字型那段（`\ifXeTeX` 開頭）已經寫好：依序找 Noto Serif CJK TC（Linux、GitHub 雲端）、新細明體 PMingLiU、微軟正黑體（Windows）、宋體-繁 Songti TC（Mac）；都找不到時改用 TeX 內附的 Fandol 字型（常用繁體字大多有）。有字印不出來，build 會停下來列出是哪幾個字，再請老師裝字型或改成電腦上有的中文字型。
 
 ## 第 6 步：編出 PDF
