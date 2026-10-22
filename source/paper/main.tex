@@ -1,0 +1,138 @@
+% !TEX program = pdflatex
+% ↑ 論文或書目裡有中文時，把上面這行改成 % !TEX program = xelatex 就好（build.py 看這一行決定用哪個引擎；
+%   下面的 \ifXeTeX 那段會自動載入中文字型）。
+% 這份是原料（source/）。build.py 會把它複製到 output/ 再排版，所以下面 \input 的
+% numbers.tex、tables/、figures/ 都是 output/ 裡由程式產生的檔。用 build.py 編，不要在 TeX 編輯器直接按編譯。
+% 範例：用重建的練習資料，重算原論文（書目 Su2021）的結果。換成自己的研究時，照 WORKFLOW.md 改。
+\documentclass[preprint,12pt]{elsarticle}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+\usepackage{color}
+\usepackage{iftex}
+\ifXeTeX % 只有用 xelatex 編的時候才載入中文；pdflatex 會跳過這段
+  \usepackage{xeCJK}
+  \IfFontExistsTF{Noto Serif CJK TC}{\setCJKmainfont{Noto Serif CJK TC}}{% Linux、GitHub 雲端
+  \IfFontExistsTF{PMingLiU}{\setCJKmainfont{PMingLiU}}{% Windows：新細明體
+  \IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{% Windows：微軟正黑體
+  \IfFontExistsTF{Songti TC}{\setCJKmainfont{Songti TC}}{}}}}% Mac：宋體-繁
+\fi
+\biboptions{sort&compress}
+\input{numbers.tex}
+
+\journal{a workshop (worked example)}
+
+\begin{document}
+\begin{frontmatter}
+
+\title{Re-deriving the published results of a dementia care training study from reconstructed practice data: a worked example}
+
+\author{Author Name (placeholder)}
+\address{Worked example prepared for a research-team workshop on 28 October 2026; not for submission}
+
+\begin{abstract}
+\textbf{Background:} Being able to regenerate every number in a paper from data and code is a basic check of reproducible research.
+\textbf{Objective:} To show, with a published study as the example, how a scripted pipeline produces the tables, figures and in-text numbers of a paper and checks them against the published values. This is a teaching example; it is not a re-analysis or an audit of the original study.
+\textbf{Methods:} Practice data for \NTotal{} home care workers (\NInt{} intervention, \NCtl{} control) were reconstructed from Tables 1 and 2 of a published controlled study \cite{Su2021}, so that category counts, means and standard deviations agree with the published values. An analysis script recomputed the between-group $p$ values and Cohen's $d$ and compared them with the published values.
+\textbf{Results:} With the tests named in the original report, \TOneMatch{} of \TOneTotal{} baseline $p$ values and \PMatch{} of \PTotal{} outcome $p$ values were identical to the published values; Cohen's $d$ differed by at most \DMaxDiff{}.
+\textbf{Conclusions:} Summary-level results can be re-derived from reconstructed data. Results that depend on individual-level data, such as the published GEE estimates, need the original data set.
+\end{abstract}
+
+\begin{keyword}
+reproducible research \sep dementia care training \sep home care workers \sep reconstructed data \sep gnuplot
+\end{keyword}
+\end{frontmatter}
+
+\section{Introduction}
+For home care workers, looking after older adults with dementia is demanding work \cite{Su2021}. In a controlled study in eastern Taiwan, home care workers from one agency were given a 12-week programme that paired mobile e-learning with online and face-to-face mentoring, and were compared with workers from a second agency who attended conventional lectures; in GEE analyses, knowledge, attitudes and competence in dementia care improved, and the improvements were still present 12 weeks after the programme ended \cite{Su2021}. The same team later evaluated a virtual reality-based dementia training with peer support for home care workers in a cluster randomised controlled trial \cite{Sung2022}.
+
+Rerunning an analysis from its data and code has been proposed as a practical complement to full replication \cite{Peng2011}. In practice, every number in a paper should be traceable to data and code. This worked example uses that published report \cite{Su2021} to show such a pipeline: the numbers in the text and tables are written by an analysis script, the figures are drawn by gnuplot scripts, and each recomputed value is compared with the value printed in the original report.
+
+\section{Methods}
+\subsection{Source study}
+The source study was a pre/post/follow-up controlled study in which two home care agencies were randomly allocated to the intervention or the control condition. The intervention group received the 12-week training described above, and the control group received 8 hours of conventional lectures. Outcomes were measured at baseline, at the end of the 12-week intervention (week 12) and 12 weeks after the intervention (week 24). The original analyses used the $t$ test, the $\chi^2$ test or Fisher's exact test for baseline comparisons, Cohen's $d$ with the pooled standard deviation, and GEE models \cite{Su2021}.
+
+\subsection{Measures}
+Knowledge was measured with the 25-item Dementia Knowledge Assessment Scale (DKAS; maximum score 50) \cite{Annear2017}, attitudes with the 19-item Approaches to Dementia Questionnaire (ADQ; scores 19--95), and competence with the 17-item Sense of Competence in Dementia Care Staff scale (SCIDS; scores 17--68) \cite{Schepers2012}. Higher scores indicate better knowledge, more positive attitudes and greater competence. Score ranges follow the original report \cite{Su2021}.
+
+\subsection{Reconstructed practice data}
+This example uses only the published summary tables. A practice data set was reconstructed from the published summary statistics with \texttt{tools/make\_practice\_data.py}. Category counts reproduce the published Table 1 exactly. Means and standard deviations of age, years worked and the three scales at each time point round to the published values; for age and years worked, values were also chosen so that the $t$ test reproduces the published $p$ values. Correlations between a person's scores at different time points are not reported in the original paper and were set to 0.5. The reconstructed data are not the original data and must not be used for substantive conclusions.
+
+\subsection{Statistical analysis}
+Each baseline $p$ value was recomputed with a test named in the original report: Student's $t$ test for age and years worked (equal variances assumed), Fisher's exact test (Freeman--Halton extension, by full enumeration) for sex, marital status, job and in-service training, and the likelihood-ratio $\chi^2$ test for education and dementia training, with Pearson's $\chi^2$ test also reported for these two. Scores at each time point were compared between groups with the $t$ test. Cohen's $d$ was calculated as the mean difference divided by the pooled standard deviation \cite{Cohen2013}, with a 95\% confidence interval from its large-sample variance \cite{HedgesOlkin1985}. Every recomputed value was compared with the value printed in the original report. \ExcludedSentence{} Analyses used Python (pandas, SciPy), figures were drawn with gnuplot, and all numbers in this paper are written to \texttt{numbers.tex} by \texttt{source/scripts/analyze.py}. The analysis code was drafted with an AI coding assistant, and selected results were recomputed independently to check it.
+
+\section{Results}
+\subsection{Baseline characteristics}
+The analysis included \NTotal{} participants; \NFemale{} were women, and their mean age was \AgeMean{} years (SD \AgeSD{}). \TOneMatch{} of the \TOneTotal{} recomputed baseline $p$ values were identical to the published values (Table~\ref{tab:baseline}). For education and dementia training, the likelihood-ratio $\chi^2$ test gave $p$ values of \EduLRP{} and \DemLRP{} (published: \EduPubP{} and \DemPubP{}), and Pearson's $\chi^2$ test, shown for comparison, gave \EduPearsonP{} and \DemPearsonP{}.
+
+\begin{table}[htbp]
+\centering
+\caption{Baseline characteristics (reconstructed practice data). Published $p$: original report. Reproduced $p$: Student's $t$ test for age and years worked; Fisher's exact test for sex, marital status, job and in-service training; likelihood-ratio $\chi^2$ test for education and dementia training.}
+\label{tab:baseline}
+\small
+\input{tables/table1.tex}
+\end{table}
+
+\subsection{Outcomes}
+At week 12, DKAS scores were \DKASIntTOneMean{} in the intervention group and \DKASCtlTOneMean{} in the control group (\DKASTOnePstat{}); at week 24 they were \DKASIntTTwoMean{} and \DKASCtlTTwoMean{} (\DKASTTwoPstat{}) (Table~\ref{tab:outcomes}; Fig.~\ref{fig:outcomes}). Printed to three decimals, \PMatch{} of \PTotal{} between-group $p$ values were identical to the published values.\PDiffSentence{}
+
+\begin{table}[htbp]
+\centering
+\caption{Scores at baseline, week 12 and week 24 (reconstructed practice data). Means and SDs agree with the published Table 2 by construction; the $p$ values ($t$ test) are recomputed from the data.}
+\label{tab:outcomes}
+\small
+\input{tables/table2.tex}
+\end{table}
+
+\begin{figure}[tbp]
+\centering
+\input{figures/fig1.tex}
+\caption{Mean scores (SD) of DKAS, ADQ and SCIDS by group and time point (reconstructed practice data). The original report showed the same values as bar graphs.}
+\label{fig:outcomes}
+\end{figure}
+
+\subsection{Effect sizes}
+\DMatch{} of \DTotal{} values of Cohen's $d$ were identical to two decimals; none differed by more than \DMaxDiff{}, and confidence limits differed by at most \CIMaxDiff{} (Table~\ref{tab:effects}; Fig.~\ref{fig:effects}). For DKAS, $d$ was \DKASTOneD{} at week 12 and \DKASTTwoD{} at week 24.
+
+\begin{table}[htbp]
+\centering
+\caption{Cohen's $d$ (95\% CI) for the intervention versus the control group: values printed in the original report and values reproduced from the practice data.}
+\label{tab:effects}
+\small
+\input{tables/table3.tex}
+\end{table}
+
+\begin{figure}[tbp]
+\centering
+\input{figures/fig2.tex}
+\caption{Cohen's $d$ with 95\% confidence intervals: published (open circles) and reproduced from the practice data (filled circles).}
+\label{fig:effects}
+\end{figure}
+
+\section{Discussion}
+The summary-level results of the source study could be re-derived from data reconstructed from its published tables, and every recomputed value was consistent with the methods described in the original report. This agreement is expected: $t$ tests and Cohen's $d$ depend only on group sizes, means and standard deviations, and the practice data were built to match these. The comparison therefore shows that the pipeline reproduces the values the practice data were built to match; it is not an assessment of the original study. Here Cohen's $d$ differed from the published values by at most \DMaxDiff{}. Differences of this size in the last printed decimal are expected when data are rebuilt from means and standard deviations printed to two decimals; they are a property of the practice data, not of the original analysis.
+% ↑ 這一句的解讀只在「沒有排除任何人」時成立；EXCLUDE_IDS 改了、差距變大，這句要重寫（數字會自己變，解讀不會）。
+
+GEE models need individual-level longitudinal data, which are not part of the published tables, so this example does not attempt them.
+
+\subsection{Limitations}
+The practice data were reconstructed from rounded summary statistics and an assumed correlation between time points. They reproduce the published summaries but not the original individual responses, and they carry no evidence about the intervention.
+
+\section{Conclusions}
+When data, code, tables and figures are linked, a change in the data or the analysis updates every number in the paper on the next build, and each value can be checked against its source.
+
+% 照期刊規定改：標題照期刊的寫法；寫出實際用了哪個 AI 工具、做什麼、你怎麼把關。每一句都要是真的做過的事。
+\section*{Declaration of generative AI and AI-assisted technologies in the writing process}
+During the preparation of this example, the author used Claude Code (Anthropic) to draft the analysis code, the figure scripts and parts of the text. Each citation was checked against its DOI record, and every number was regenerated from the analysis script. The author reviewed and edited the content and takes full responsibility for it.
+
+\section*{Data availability}
+The reconstructed practice data, the published values used for comparison and all code are in the project folders \texttt{source/data/}, \texttt{source/scripts/} and \texttt{source/gnuplot/}. The original study data are not included.
+
+\section*{Acknowledgements}
+Published values are taken from \cite{Su2021}, an open-access article distributed under the Creative Commons Attribution 4.0 International License.
+
+\bibliographystyle{elsarticle-num}
+\bibliography{refs}
+
+\end{document}

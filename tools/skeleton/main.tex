@@ -1,0 +1,77 @@
+% !TEX program = pdflatex
+% ↑ 論文或書目裡有中文時，把上面這行改成 % !TEX program = xelatex 就好（build.py 看這一行決定用哪個引擎；
+%   下面的 \ifXeTeX 那段會自動載入中文字型）。
+% 這份是原料（source/）。build.py 會把它複製到 output/ 再排版，所以下面 \input 的
+% numbers.tex、tables/、figures/ 都是 output/ 裡由程式產生的檔。用 build.py 編，不要在 TeX 編輯器直接按編譯。
+% 新論文的骨架：每一節下面的註解寫了要放什麼。數字一律用 numbers.tex 的代號，不手打。
+\documentclass[preprint,12pt]{elsarticle}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+\usepackage{color}
+\usepackage{iftex}
+\ifXeTeX % 只有用 xelatex 編的時候才載入中文；pdflatex 會跳過這段
+  \usepackage{xeCJK}
+  \IfFontExistsTF{Noto Serif CJK TC}{\setCJKmainfont{Noto Serif CJK TC}}{% Linux、GitHub 雲端
+  \IfFontExistsTF{PMingLiU}{\setCJKmainfont{PMingLiU}}{% Windows：新細明體
+  \IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{% Windows：微軟正黑體
+  \IfFontExistsTF{Songti TC}{\setCJKmainfont{Songti TC}}{}}}}% Mac：宋體-繁
+\fi
+\biboptions{sort&compress}
+\input{numbers.tex}
+
+\journal{the target journal}
+
+\begin{document}
+\begin{frontmatter}
+
+\title{Working title}
+
+\author{Author Name (placeholder)}
+\address{Affiliation (placeholder)}
+
+\begin{abstract}
+% 最後才寫：Results 和 Discussion 定了以後，再請 AI 起草結構式摘要（字數照期刊規定）。
+Abstract to be written.
+\end{abstract}
+
+\begin{keyword}
+keyword one \sep keyword two
+\end{keyword}
+\end{frontmatter}
+
+\section{Introduction}
+% 背景、研究缺口、研究目的。每一句講到文獻的，只寫該篇摘要或原文真的有寫的內容，並 \cite 那一篇。
+
+\section{Methods}
+\subsection{Design and participants}
+% 研究設計、分組方式、收案條件、倫理審查（照 material/ 裡的研究構想寫）。
+\subsection{Intervention}
+\subsection{Measures}
+% 每個量表：題數、計分範圍、出處（\cite）。
+\subsection{Statistical analysis}
+% 用了哪些檢定、為什麼、顯著水準、軟體。
+
+\section{Results}
+% 數字一律用 output/numbers.tex 的代號；表用 \input{tables/tableN.tex}；圖用 \input{figures/figN.tex}。
+The analysis included \NTotal{} participants.
+
+\section{Discussion}
+% 主要發現、跟文獻比較、限制。結論說到多強由老師決定。
+
+\section{Conclusions}
+
+% 照期刊規定改：標題照期刊的寫法；寫出實際用了哪個 AI 工具、做什麼、你怎麼把關。每一句都要是真的做過的事。
+% 給 AI：不要照抄 examples/ 範例的聲明（例如「每篇文獻都對過 DOI」「作者審閱並修改」）。
+%   老師做過的事，等老師說了才寫；還沒做的，先在回報裡問老師。
+\section*{Declaration of generative AI and AI-assisted technologies in the writing process}
+To be written.
+
+\section*{Data availability}
+To be written.
+
+\bibliographystyle{elsarticle-num}
+\bibliography{refs}
+
+\end{document}

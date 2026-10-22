@@ -1,0 +1,15 @@
+# output/ 是 build.py 每次重做的成品，不放進版本紀錄（只留說明檔）
+output/*
+!output/README.md
+__pycache__/
+
+# examples/ 裡收起來的舊論文：研究資料一律不推上 GitHub，只留欄位說明 README.md。
+# tools/new_paper.py 本來就不會把資料檔複製進 examples/，這兩行是第二道保險（例如有人手動複製進去）。
+examples/*/source/data/*
+!examples/*/source/data/README.md
+
+# Office 與系統暫存檔
+~$*
+.DS_Store
+Thumbs.db
+desktop.ini

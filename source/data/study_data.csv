@@ -1,0 +1,141 @@
+id,group,age,sex,marital,education,job,years_worked,training,dementia_training,dkas_t0,dkas_t1,dkas_t2,adq_t0,adq_t1,adq_t2,scids_t0,scids_t1,scids_t2
+I001,intervention,49,female,married,senior high or vocational,full-time,7.8,>20 h,7-12 h,28,37,38,60,62,67,42,57,46
+I002,intervention,41,female,widowed,senior high or vocational,full-time,10.7,>20 h,7-12 h,21,44,40,57,60,66,43,54,46
+I003,intervention,49,female,married,senior high or vocational,part-time,9.1,>20 h,7-12 h,34,43,40,69,66,74,45,54,48
+I004,intervention,56,female,married,senior high or vocational,full-time,0.3,10-20 h,3-6 h,22,29,31,62,84,82,42,52,55
+I005,intervention,54,female,married,elementary,full-time,7.8,10-20 h,3-6 h,21,32,32,65,69,74,48,46,46
+I006,intervention,54,female,married,senior high or vocational,full-time,16.1,>20 h,<2 h,22,28,30,68,73,61,33,52,54
+I007,intervention,54,female,married,junior high,full-time,0.3,>20 h,>12 h,32,44,34,67,62,68,47,42,45
+I008,intervention,52,female,married,senior high or vocational,full-time,5.5,10-20 h,<2 h,31,32,40,67,73,81,47,53,49
+I009,intervention,50,female,married,senior high or vocational,full-time,8.6,<10 h,<2 h,29,42,43,69,85,88,43,39,45
+I010,intervention,39,female,married,senior high or vocational,full-time,11.8,>20 h,3-6 h,35,42,32,78,75,84,39,46,40
+I011,intervention,46,female,unmarried,senior high or vocational,full-time,15.1,>20 h,<2 h,29,50,43,66,77,80,55,48,49
+I012,intervention,51,female,married,senior high or vocational,full-time,6.6,>20 h,>12 h,30,41,43,71,81,80,46,46,42
+I013,intervention,63,female,married,senior high or vocational,full-time,13.1,>20 h,3-6 h,31,42,35,63,68,66,48,57,53
+I014,intervention,45,female,married,junior high,full-time,13.8,>20 h,>12 h,35,39,35,62,63,72,31,41,42
+I015,intervention,36,female,married,senior high or vocational,full-time,0.3,>20 h,>12 h,41,38,41,71,64,70,51,56,52
+I016,intervention,31,female,married,senior high or vocational,full-time,15.3,>20 h,>12 h,26,33,35,64,70,71,50,55,67
+I017,intervention,44,female,married,senior high or vocational,part-time,9.4,>20 h,7-12 h,34,45,32,65,83,65,51,52,30
+I018,intervention,59,female,married,senior high or vocational,full-time,6.3,>20 h,3-6 h,16,34,32,62,75,73,48,49,67
+I019,intervention,48,female,married,senior high or vocational,full-time,9.6,>20 h,<2 h,37,45,43,68,70,90,51,54,55
+I020,intervention,57,female,married,university,full-time,5.8,>20 h,3-6 h,15,22,34,67,75,77,47,49,41
+I021,intervention,34,female,married,senior high or vocational,full-time,12.1,10-20 h,>12 h,27,35,35,72,68,63,48,55,58
+I022,intervention,56,female,married,elementary,full-time,6.6,>20 h,7-12 h,24,35,32,60,67,71,31,50,38
+I023,intervention,44,female,widowed,senior high or vocational,full-time,17.4,>20 h,none,34,33,33,59,65,67,55,61,63
+I024,intervention,52,female,married,senior high or vocational,full-time,9.0,>20 h,>12 h,18,37,31,69,74,73,54,56,60
+I025,intervention,43,female,married,university,full-time,5.0,>20 h,7-12 h,21,30,29,71,55,66,43,47,47
+I026,intervention,36,female,unmarried,senior high or vocational,full-time,12.2,10-20 h,7-12 h,28,32,29,56,72,65,47,35,44
+I027,intervention,39,female,married,senior high or vocational,full-time,10.4,>20 h,7-12 h,19,20,19,59,65,68,45,31,46
+I028,intervention,54,female,unmarried,senior high or vocational,full-time,17.1,>20 h,7-12 h,17,35,29,69,78,66,33,51,43
+I029,intervention,50,female,divorced,senior high or vocational,full-time,12.1,>20 h,>12 h,33,50,42,61,75,70,36,45,44
+I030,intervention,47,female,married,senior high or vocational,part-time,11.2,>20 h,7-12 h,24,37,34,75,73,79,36,47,50
+I031,intervention,59,female,widowed,university,full-time,8.5,<10 h,3-6 h,33,32,41,71,64,76,50,47,44
+I032,intervention,41,female,divorced,elementary,full-time,11.7,>20 h,>12 h,28,35,36,63,62,75,46,57,44
+I033,intervention,41,female,divorced,senior high or vocational,part-time,7.1,>20 h,none,27,50,32,65,63,67,49,44,45
+I034,intervention,45,female,divorced,junior high,full-time,23.6,>20 h,>12 h,20,22,31,63,74,75,52,52,62
+I035,intervention,35,female,divorced,senior high or vocational,full-time,10.7,<10 h,7-12 h,25,32,32,60,56,64,51,49,52
+I036,intervention,44,female,widowed,senior high or vocational,full-time,13.5,>20 h,3-6 h,38,50,41,69,70,71,46,53,52
+I037,intervention,45,female,married,elementary,full-time,9.4,<10 h,7-12 h,27,42,34,74,66,64,43,54,63
+I038,intervention,52,female,widowed,junior high,full-time,10.9,>20 h,>12 h,35,44,39,74,81,72,46,45,45
+I039,intervention,51,female,married,senior high or vocational,full-time,5.4,>20 h,<2 h,38,50,49,72,65,71,36,37,49
+I040,intervention,52,female,married,junior high,full-time,5.1,>20 h,none,25,40,41,71,65,74,41,68,59
+I041,intervention,56,female,married,senior high or vocational,full-time,3.3,>20 h,3-6 h,27,39,45,55,65,51,39,42,39
+I042,intervention,38,female,married,senior high or vocational,full-time,0.3,10-20 h,none,28,34,37,64,73,69,38,30,46
+I043,intervention,49,female,married,senior high or vocational,full-time,4.9,10-20 h,7-12 h,22,24,46,77,71,71,47,52,52
+I044,intervention,39,female,widowed,elementary,full-time,1.8,>20 h,>12 h,26,50,41,66,72,79,50,50,49
+I045,intervention,48,female,divorced,elementary,full-time,12.5,10-20 h,>12 h,20,36,32,71,69,71,51,49,58
+I046,intervention,49,female,married,senior high or vocational,full-time,0.3,>20 h,<2 h,31,42,40,61,71,72,50,52,58
+I047,intervention,47,female,widowed,senior high or vocational,full-time,15.2,>20 h,>12 h,25,34,41,67,77,75,46,46,50
+I048,intervention,47,female,divorced,junior high,full-time,15.3,>20 h,7-12 h,18,12,30,68,65,74,51,45,51
+I049,intervention,52,female,married,university,full-time,13.3,<10 h,<2 h,37,50,38,66,70,63,43,39,49
+I050,intervention,60,female,divorced,senior high or vocational,full-time,6.7,>20 h,7-12 h,32,41,38,67,67,76,44,46,48
+I051,intervention,46,female,divorced,senior high or vocational,full-time,11.0,>20 h,7-12 h,32,39,39,61,65,70,51,60,55
+I052,intervention,38,female,married,senior high or vocational,full-time,4.1,>20 h,>12 h,15,25,27,58,55,64,48,53,58
+I053,intervention,47,female,unmarried,senior high or vocational,full-time,7.9,>20 h,7-12 h,14,32,34,59,76,69,38,33,44
+I054,intervention,54,female,divorced,senior high or vocational,full-time,3.3,>20 h,7-12 h,15,28,29,56,56,65,39,41,49
+I055,intervention,38,female,married,senior high or vocational,full-time,4.0,10-20 h,<2 h,29,33,42,76,75,81,44,51,42
+I056,intervention,53,female,married,senior high or vocational,full-time,3.7,10-20 h,none,37,50,41,61,71,72,41,50,38
+I057,intervention,53,female,married,senior high or vocational,full-time,10.0,>20 h,>12 h,27,36,41,52,65,66,53,46,45
+I058,intervention,51,female,widowed,junior high,full-time,16.3,>20 h,<2 h,17,42,30,68,73,75,58,45,51
+I059,intervention,43,female,married,senior high or vocational,full-time,11.5,>20 h,<2 h,32,35,41,60,69,72,34,44,41
+I060,intervention,46,female,married,university,full-time,10.0,>20 h,7-12 h,31,39,35,78,91,84,52,42,48
+I061,intervention,37,female,married,junior high,full-time,4.6,10-20 h,7-12 h,28,42,44,67,82,74,39,33,45
+I062,intervention,39,male,married,university,full-time,0.3,>20 h,7-12 h,28,41,41,59,66,65,43,37,44
+I063,intervention,35,female,married,elementary,full-time,3.5,10-20 h,<2 h,19,28,35,64,70,75,35,39,47
+I064,intervention,50,female,married,junior high,full-time,14.1,>20 h,<2 h,29,40,39,73,73,81,33,43,43
+I065,intervention,49,female,divorced,university,full-time,5.9,>20 h,3-6 h,28,43,39,76,76,74,43,56,52
+I066,intervention,51,female,widowed,elementary,full-time,9.4,>20 h,7-12 h,24,31,31,66,74,72,38,45,53
+I067,intervention,57,female,divorced,senior high or vocational,full-time,4.9,>20 h,>12 h,18,37,27,74,75,69,39,48,40
+I068,intervention,48,female,widowed,university,full-time,4.4,>20 h,7-12 h,15,30,30,63,74,74,44,51,42
+I069,intervention,48,female,divorced,senior high or vocational,full-time,18.9,>20 h,3-6 h,30,36,41,64,70,71,47,59,50
+I070,intervention,42,female,married,senior high or vocational,part-time,4.0,>20 h,3-6 h,24,41,38,69,75,71,50,47,41
+C001,control,51,female,married,senior high or vocational,full-time,0.3,none,none,35,44,42,65,59,68,51,46,49
+C002,control,50,female,married,junior high,full-time,13.6,>20 h,>12 h,29,26,14,66,56,59,57,51,51
+C003,control,50,female,married,senior high or vocational,full-time,0.3,>20 h,>12 h,27,21,15,72,73,73,41,49,46
+C004,control,49,female,married,elementary,full-time,6.7,>20 h,none,38,31,30,68,67,75,36,51,47
+C005,control,37,female,married,senior high or vocational,full-time,12.4,>20 h,7-12 h,40,31,33,57,64,60,40,38,35
+C006,control,52,female,married,elementary,full-time,5.9,>20 h,>12 h,38,46,40,61,61,70,36,42,46
+C007,control,38,female,married,senior high or vocational,full-time,9.0,>20 h,>12 h,44,36,31,65,69,64,48,43,47
+C008,control,40,female,married,junior high,full-time,12.3,>20 h,3-6 h,38,29,37,60,73,66,45,37,48
+C009,control,51,female,married,senior high or vocational,full-time,5.2,>20 h,3-6 h,29,34,29,76,69,70,49,50,41
+C010,control,45,female,married,senior high or vocational,full-time,7.4,>20 h,>12 h,16,28,26,69,68,63,45,42,45
+C011,control,60,female,married,junior high,full-time,9.8,>20 h,<2 h,23,31,42,69,69,72,49,40,48
+C012,control,43,female,married,university,full-time,18.6,>20 h,none,36,37,33,67,63,75,47,50,39
+C013,control,51,female,married,senior high or vocational,full-time,13.2,10-20 h,>12 h,27,36,24,61,77,68,49,38,44
+C014,control,41,female,divorced,senior high or vocational,full-time,12.4,>20 h,>12 h,26,30,36,58,66,63,34,41,46
+C015,control,40,female,married,junior high,full-time,4.3,>20 h,>12 h,26,29,37,63,68,63,31,43,36
+C016,control,48,female,widowed,junior high,full-time,0.3,10-20 h,>12 h,27,36,33,66,75,71,46,40,45
+C017,control,56,female,married,junior high,full-time,6.7,>20 h,>12 h,24,29,27,74,74,74,34,52,54
+C018,control,56,female,divorced,junior high,part-time,8.3,10-20 h,>12 h,18,35,32,71,57,60,51,61,51
+C019,control,41,female,married,junior high,full-time,0.3,>20 h,>12 h,28,18,19,61,57,61,67,57,54
+C020,control,47,female,married,university,full-time,7.9,>20 h,3-6 h,9,37,27,64,62,68,44,39,59
+C021,control,44,female,married,elementary,full-time,10.5,>20 h,>12 h,21,25,26,62,73,76,44,45,35
+C022,control,33,female,married,senior high or vocational,full-time,9.6,>20 h,3-6 h,19,15,23,72,63,76,40,39,39
+C023,control,46,female,married,junior high,full-time,5.7,>20 h,>12 h,20,34,36,70,68,69,43,41,46
+C024,control,43,female,divorced,junior high,full-time,14.3,10-20 h,>12 h,18,32,33,69,64,72,38,38,46
+C025,control,40,female,married,junior high,full-time,5.9,>20 h,none,28,31,26,72,75,71,57,57,56
+C026,control,46,female,married,senior high or vocational,full-time,11.2,10-20 h,3-6 h,20,30,40,63,60,59,47,48,44
+C027,control,51,female,married,university,full-time,11.0,10-20 h,>12 h,38,21,25,71,64,79,33,42,40
+C028,control,58,female,divorced,senior high or vocational,full-time,7.3,>20 h,>12 h,27,45,37,78,78,78,47,43,44
+C029,control,25,female,married,senior high or vocational,full-time,8.9,>20 h,<2 h,8,23,18,68,77,78,57,41,52
+C030,control,48,female,married,junior high,full-time,16.1,>20 h,<2 h,19,33,27,71,70,66,51,57,51
+C031,control,35,female,married,junior high,full-time,6.5,>20 h,none,8,19,27,63,61,66,53,47,48
+C032,control,65,female,widowed,junior high,full-time,12.3,>20 h,<2 h,24,31,32,63,63,66,51,59,53
+C033,control,52,female,married,junior high,full-time,16.1,>20 h,7-12 h,35,37,42,65,70,67,42,38,45
+C034,control,52,female,widowed,junior high,full-time,13.6,>20 h,3-6 h,25,40,42,62,70,63,48,42,48
+C035,control,54,female,widowed,university,full-time,10.5,>20 h,3-6 h,32,29,14,70,68,63,37,45,44
+C036,control,39,female,married,senior high or vocational,full-time,7.4,>20 h,>12 h,16,28,32,65,80,74,52,47,48
+C037,control,49,female,divorced,junior high,full-time,10.8,>20 h,<2 h,30,31,37,51,64,57,45,49,47
+C038,control,42,female,married,university,full-time,0.3,>20 h,>12 h,15,25,28,64,52,59,55,54,66
+C039,control,52,female,married,junior high,part-time,3.9,>20 h,>12 h,23,34,35,67,61,65,58,47,57
+C040,control,36,female,married,junior high,part-time,5.6,10-20 h,<2 h,28,28,15,70,63,67,50,51,43
+C041,control,56,female,widowed,senior high or vocational,full-time,18.4,10-20 h,none,19,31,26,71,68,69,53,44,34
+C042,control,55,female,married,elementary,full-time,0.3,>20 h,none,13,23,27,72,74,73,52,59,62
+C043,control,54,female,married,senior high or vocational,full-time,7.5,>20 h,>12 h,25,23,26,59,52,61,50,51,44
+C044,control,54,female,widowed,senior high or vocational,full-time,11.2,>20 h,>12 h,31,31,21,72,71,80,29,21,34
+C045,control,52,female,married,junior high,part-time,12.6,>20 h,>12 h,15,17,14,68,71,66,42,54,53
+C046,control,65,female,widowed,senior high or vocational,full-time,11.7,>20 h,7-12 h,27,26,28,73,81,87,41,40,49
+C047,control,56,female,married,junior high,full-time,12.6,>20 h,none,35,35,38,68,70,68,52,46,49
+C048,control,49,female,married,senior high or vocational,full-time,4.8,>20 h,7-12 h,15,33,37,62,65,69,46,47,49
+C049,control,59,female,married,senior high or vocational,full-time,6.2,10-20 h,<2 h,26,30,32,78,79,73,51,44,30
+C050,control,41,female,married,university,full-time,11.6,>20 h,>12 h,29,31,37,68,63,54,45,50,43
+C051,control,43,female,married,elementary,full-time,4.6,>20 h,3-6 h,35,32,37,63,61,62,49,55,48
+C052,control,46,female,unmarried,junior high,full-time,7.9,>20 h,3-6 h,13,26,26,58,67,70,46,52,52
+C053,control,65,female,divorced,elementary,part-time,13.1,>20 h,<2 h,27,28,20,58,66,73,39,43,47
+C054,control,65,female,widowed,junior high,full-time,0.3,>20 h,>12 h,21,25,36,58,61,60,36,44,60
+C055,control,50,female,married,senior high or vocational,full-time,11.4,>20 h,7-12 h,40,43,32,68,62,71,41,33,34
+C056,control,54,female,divorced,junior high,full-time,11.1,>20 h,>12 h,23,32,39,79,72,79,27,39,41
+C057,control,42,female,married,senior high or vocational,full-time,15.7,>20 h,>12 h,26,25,32,71,76,71,46,47,44
+C058,control,58,female,widowed,senior high or vocational,full-time,30.6,10-20 h,>12 h,21,34,33,60,61,65,50,32,39
+C059,control,33,female,married,senior high or vocational,full-time,12.7,10-20 h,7-12 h,28,34,28,70,76,69,36,41,43
+C060,control,51,female,married,university,full-time,11.6,>20 h,>12 h,26,25,35,61,58,66,32,49,40
+C061,control,57,female,married,elementary,full-time,13.7,>20 h,3-6 h,17,43,29,69,71,64,45,48,50
+C062,control,53,female,married,senior high or vocational,full-time,0.3,10-20 h,none,26,24,30,57,63,66,52,67,58
+C063,control,52,female,divorced,senior high or vocational,full-time,7.4,>20 h,3-6 h,30,26,26,65,74,65,54,47,55
+C064,control,55,female,divorced,senior high or vocational,full-time,6.2,>20 h,>12 h,15,31,31,59,73,74,45,41,38
+C065,control,28,female,unmarried,junior high,full-time,4.2,>20 h,3-6 h,20,36,27,70,62,65,45,52,50
+C066,control,58,female,married,junior high,full-time,7.9,>20 h,>12 h,24,26,14,66,69,63,39,45,34
+C067,control,37,female,widowed,senior high or vocational,full-time,0.3,10-20 h,>12 h,28,28,35,59,64,61,53,54,42
+C068,control,42,male,married,junior high,part-time,3.9,>20 h,7-12 h,33,38,39,72,62,67,33,48,42
+C069,control,57,female,married,junior high,part-time,4.8,>20 h,3-6 h,32,29,37,70,72,72,42,41,49
+C070,control,45,female,married,junior high,part-time,0.3,>20 h,none,36,30,22,63,65,66,47,47,49

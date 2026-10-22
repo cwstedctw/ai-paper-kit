@@ -1,0 +1,82 @@
+% refs.bib：範例文獻，2026-10-22 用 Scite 查到真實紀錄後整理（作者、年份、卷期、DOI）。
+% 平常這個檔由 Zotero（Better BibTeX 的「保持更新」）自動匯出，不要手改。
+% 這份範例手動修過幾處，正好示範「工具的書目也會錯」：
+%   1. Scite 匯出的條目類型是 journal-article，BibTeX 不認得，改成 article。
+%   2. Scite 給的作者名字（例如 Hsin-Feng）用的是一個長得很像連字號的特殊符號，pdflatex 不認得，改成一般的連字號（-）。
+%   3. 2026-10-22 每筆都用 DOI 查 Crossref 回讀核對：
+%      Annear2017、Schepers2012 的作者名字改成 Crossref 的寫法（Scite 多給了幾個中間名縮寫，Crossref 和 PubMed 都沒有）；
+%      Annear2017 補上文章編號 168（BMC 這類線上期刊沒有頁碼，用文章編號，放在 pages 欄）。
+%   4. 題目裡的量表縮寫用大括號包起來（{DKAS}、{SCIDS}）：期刊的書目格式會把題目改成小寫，包起來的字才會照原樣印。
+% 兩本書都有 DOI：Cohen 的是 Routledge 2013 版；Hedges 與 Olkin 的是 Crossref 上的 10.1016/C2009-0-03396-0
+%   （Elsevier 1985，題名相同；那筆紀錄沒有列作者，用它的 ISBN 9780080570655 在 Open Library 查到作者是 Hedges 與 Olkin）。
+%   build 不會要求書一定要有 DOI。
+% （註解裡不能出現小老鼠符號：BibTeX 會把它當成新條目的開頭。）
+
+@article{Su2021,
+  author  = {Su, Hsin-Feng and Koo, Malcolm and Lee, Wen-Li and Sung, Huei-Chuan and Lee, Ru-Ping and Liu, Wen-I},
+  title   = {A Dementia Care Training Using Mobile E-Learning with Mentoring Support for Home Care Workers: A Controlled Study},
+  journal = {BMC Geriatrics},
+  year    = {2021},
+  volume  = {21},
+  pages   = {126},
+  doi     = {10.1186/s12877-021-02075-3}
+}
+
+@article{Sung2022,
+  author  = {Sung, Huei-Chuan and Su, Hsin-Feng and Lee, Wen-Li and Yamakawa, Miyae and Wang, Hsiu-Mei},
+  title   = {Effects of a Dementia Virtual Reality-Based Training with Peer Support for Home Care Workers: A Cluster Randomized Controlled Trial},
+  journal = {International Journal of Geriatric Psychiatry},
+  year    = {2022},
+  volume  = {37},
+  number  = {9},
+  doi     = {10.1002/gps.5799}
+}
+
+@article{Annear2017,
+  author  = {Annear, Michael J. and Toye, Chris and Elliott, Kate-Ellen J. and McInerney, Frances and Eccleston, Claire and Robinson, Andrew},
+  title   = {Dementia Knowledge Assessment Scale ({DKAS}): Confirmatory Factor Analysis and Comparative Subscale Scores Among an International Cohort},
+  journal = {BMC Geriatrics},
+  year    = {2017},
+  volume  = {17},
+  pages   = {168},
+  doi     = {10.1186/s12877-017-0552-y}
+}
+
+@article{Schepers2012,
+  author  = {Schepers, Astrid Kristine and Orrell, Martin and Shanahan, Niamh and Spector, Aimee},
+  title   = {Sense of Competence in Dementia Care Staff ({SCIDS}) Scale: Development, Reliability, and Validity},
+  journal = {International Psychogeriatrics},
+  year    = {2012},
+  volume  = {24},
+  number  = {7},
+  pages   = {1153--1162},
+  doi     = {10.1017/S104161021100247X}
+}
+
+@article{Peng2011,
+  author  = {Peng, Roger D.},
+  title   = {Reproducible Research in Computational Science},
+  journal = {Science},
+  year    = {2011},
+  volume  = {334},
+  number  = {6060},
+  pages   = {1226--1227},
+  doi     = {10.1126/science.1213847}
+}
+
+@book{Cohen2013,
+  author    = {Cohen, Jacob},
+  title     = {Statistical Power Analysis for the Behavioral Sciences},
+  publisher = {Routledge},
+  year      = {2013},
+  doi       = {10.4324/9780203771587}
+}
+
+@book{HedgesOlkin1985,
+  author    = {Hedges, Larry V. and Olkin, Ingram},
+  title     = {Statistical Methods for Meta-Analysis},
+  publisher = {Academic Press},
+  address   = {New York},
+  year      = {1985},
+  doi       = {10.1016/C2009-0-03396-0}
+}
