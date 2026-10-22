@@ -183,7 +183,7 @@ def main():
     header = ["id", "group", "age", "sex", "marital", "education", "job", "years_worked", "training",
               "dementia_training"] + [f"{s.lower()}_{t.lower()}" for s in SCALES for t in TIMES]
     with open(OUT, "w", encoding="utf-8", newline="") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")  # 換行固定 LF：預設是 CRLF，在 Mac 重產後 git 會顯示整檔修改（10/22 mbp 實測）
         w.writerow(header)
         for g, prefix in [("intervention", "I"), ("control", "C")]:
             for i in range(N):

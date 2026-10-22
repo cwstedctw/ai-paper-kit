@@ -79,11 +79,13 @@ Mac 版：
 
 > 請幫我裝寫論文要用的工具。每裝一個之前，先告訴我要裝什麼、從哪裡裝，我同意再裝；要我輸入電腦密碼時先停下來，我自己輸入。
 > 1. TeX：裝 MacTeX（brew install --cask mactex，或到 tug.org/mactex 下載，約 6.4 GB）。我的硬碟空間不夠的話，先問我要不要改裝 BasicTeX。
-> 2. 用 Homebrew 裝 gnuplot、pandoc 和 uv（brew install gnuplot pandoc uv）；沒有 Homebrew 的話先告訴我。
+> 2. 用 Homebrew 裝 gnuplot、pandoc 和 uv（brew install gnuplot pandoc uv）；沒有 Homebrew 的話先告訴我。如果 brew 開始從原始碼編（訊息出現 Building from source、或跑超過 10 分鐘），先停下來告訴我，改用：pandoc 到 pandoc.org 下載官方安裝檔；gnuplot 用 micromamba 從 conda-forge 裝（只裝在使用者資料夾，不動系統）。
 > 3. 到範本資料夾執行 uv sync（第一次會下載 Python 和套件，要幾分鐘）。
 > 全部裝完，請一一執行 pdflatex --version、gnuplot --version、uv run python --version、pandoc --version，把版本號列給我看。
 
 **完成判準**：AI 列出四個版本號，沒有「找不到」。MacTeX 很大，建議前一天晚上裝。
+
+**Intel 晶片的 Mac 要注意**：新版 macOS 在 Intel 晶片上，Homebrew 常沒有現成編好的 gnuplot、pandoc，會改成從原始碼編，要好幾個小時（2026-10-22 在 Intel Mac、macOS 26 實測）。上面那句已經請 AI 遇到就停下來、改用官方安裝檔和 conda-forge，那次這樣裝不到一分鐘。Apple 晶片（M1 以後）的 Mac 通常有現成編好的版本（這點還沒實測）。
 
 不想在自己電腦裝 TeX：推上 GitHub，雲端會自動編出 PDF，只是每改一次都要推上去才看得到。**這條路只限練習資料，或資料符合第八節四個條件**：推上去，資料就會在 GitHub 的雲端機器上被讀取。
 
