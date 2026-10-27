@@ -50,12 +50,12 @@
 | | 做法 | 你的角色 |
 |---|---|---|
 | **A. 自動匯出（推薦）** | 老師先把 Zotero 更新到最新版，到 Better BibTeX 官網（retorque.re/zotero-better-bibtex）下載 `.xpi` 檔（用 Firefox 下載要按右鍵另存），在 Zotero 選「工具 → 外掛（Tools → Plugins）」→ 齒輪 →「從檔案安裝（Install Plugin From File）」。之後文獻集按右鍵「匯出文獻集（Export Collection）」→ 格式選 Better BibTeX、勾「保持更新（Keep updated）」→ 存成 `source/refs/refs.bib`。老師在 Zotero 加文獻，refs.bib 自己更新。 | 檢查 refs.bib：筆數、cite key、缺 DOI 的 |
-| **B. 你操作 Zotero** | 老師同意後，先裝 uv，再裝 zotero-mcp（`uv tool install zotero-mcp-server`），照它的說明接上。之後你可以搜老師的文獻庫。用 DOI 把文獻加進文獻集（例如 `zotero_add_by_doi`）是**寫入**：要 Zotero 開著，而且要照 zotero-mcp 的說明另外授權（新版 Zotero 例如 `zotero-mcp authorize-local`；舊版要 Zotero 網頁的 API key）。版本與設定以 zotero-mcp 官方說明為準。 | 加文獻前先列給老師看 |
+| **B. 你操作 Zotero** | 老師同意後，先裝 uv，再裝 zotero-mcp-server（`uv tool install zotero-mcp-server`；PyPI 上另有一個名字很像的 `zotero-mcp` 是別的作者做的，不要裝那個，兩個裝好的指令都叫 `zotero-mcp`，會互相蓋掉），照它的說明接上。之後你可以搜老師的文獻庫。用 DOI 把文獻加進文獻集（例如 `zotero_add_by_doi`）是**寫入**：要 Zotero 開著，而且要照 zotero-mcp 的說明另外授權（新版 Zotero 例如 `zotero-mcp authorize-local`；舊版要 Zotero 網頁的 API key）。版本與設定以 zotero-mcp 官方說明為準。 | 加文獻前先列給老師看 |
 | **C. 不裝外掛** | Zotero 開著，執行 `uv run tools/zotero_export.py "文獻集名稱"`，直接跟電腦上開著的 Zotero 拿書目，存成 refs.bib（超過 100 筆會自動分頁拿完）。 | 執行、回報匯出幾筆 |
 
 B 和 C 都要老師先在 Zotero：設定 → 進階，勾「允許此電腦上的其他應用程式與 Zotero 通訊（Allow other applications on this computer to communicate with Zotero）」。
 
-- **三種接法產生的 cite key（引用代號）格式不一樣。** 換接法之後，main.tex 裡的引用要跟著改；跑 build 會列出找不到的代號。
+- **換接法，cite key（引用代號）可能會變。** 裝了 Better BibTeX，Zotero 每篇文獻的 Citation Key 欄位會有值，A 和 C 匯出的代號一樣；沒裝的話，C 用 Zotero 內建的另一種寫法。跑 build 會列出找不到的代號，再把 main.tex 的引用跟著改。（2026-10-27 Zotero 10.0.6＋BBT 9.0.71 實測）
 - **沒有 DOI 的文獻**（例如有些台灣的中文期刊）：請老師在 Zotero 給那一篇加一個標籤 `nodoi`，重新匯出後 build 才會放行，並在結果裡列出來請老師自己對一次。不要自己補 DOI。
 
 - 老師可能說：「我已經把文獻集匯出成 refs.bib，幫我看一下。」
