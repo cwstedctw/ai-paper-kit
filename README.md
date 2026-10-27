@@ -66,6 +66,7 @@ ai-paper-kit/                    範本資料夾＝你的整個論文專案
 │  │  └─ fig2_effects.gp         圖 2：效果量
 │  ├─ tables/                    （選用）你用 Excel 做好的表，存成 CSV UTF-8
 │  ├─ figdata/                   （選用）你用 Excel 做好的畫圖資料，存成 CSV UTF-8
+│  ├─ images/                    （選用）現成的圖片檔：流程圖、照片（PNG、JPG、PDF）
 │  └─ paper/
 │     ├─ main.tex                論文本文（AI 寫；你看的是排出來的 PDF）
 │     └─ sn-jnl.cls、sn-vancouver-num.bst
@@ -76,6 +77,7 @@ ai-paper-kit/                    範本資料夾＝你的整個論文專案
 │  ├─ tables/                    表：table1.tex（放進 PDF）＋ table1.csv（用 Excel 打開核對）
 │  ├─ figdata/                   畫圖用的小表：fig1_dkas.csv …
 │  ├─ figures/                   畫好的圖：fig1.tex＋fig1.pdf …
+│  ├─ images/                    你放的圖片檔（從 source/images/ 複製過來）
 │  ├─ main.pdf                   論文 ← 你看這個
 │  └─ latex-log/                 排版過程的紀錄（出錯時才看）
 │
@@ -99,10 +101,11 @@ ai-paper-kit/                    範本資料夾＝你的整個論文專案
 | 一張表（你用 Excel 做的） | `source/tables/my_table.csv` | `build.py` 自動轉成 LaTeX 表格 | `output/tables/my_table.tex` | `\input{tables/my_table.tex}` |
 | 一張圖（程式算的資料） | `analyze.py` 產生的 `output/figdata/fig1_dkas.csv` | `source/gnuplot/fig1_outcomes.gp` 照小表畫 | `output/figures/fig1.tex`＋`fig1.pdf` | `\input{figures/fig1.tex}` |
 | 一張圖（你用 Excel 做的資料） | `source/figdata/my_data.csv` | 一支新的 `.gp` 腳本（請 AI 寫） | `output/figures/fig3.tex`＋`fig3.pdf` | `\input{figures/fig3.tex}` |
+| 一張現成的圖（流程圖、照片） | `source/images/flowchart.png` | 不用做，`build.py` 原樣複製 | `output/images/flowchart.png` | `\includegraphics{images/flowchart.png}` |
 
 「論文裡怎麼放」那一欄是 AI 寫進 `main.tex` 的，你不用自己打；你要記得的是 ①：**資料放對地方，其他交給 AI 和 build。**
 
-**下面兩小節寫自己的論文時才用得到，第一次讀可以先跳到第三節。**
+**下面三小節寫自己的論文時才用得到，第一次讀可以先跳到第三節。**
 
 ### 想放一張自己在 Excel 做好的表
 
@@ -120,6 +123,17 @@ ai-paper-kit/                    範本資料夾＝你的整個論文專案
 2. 另存成「CSV UTF-8」，檔名用英文（例如 `my_data.csv`），存進 `source/figdata/`。
 3. 跟 AI 說：「我在 source/figdata/ 放了 my_data.csv，第一欄是＿＿、第二欄是＿＿。請照 WORKFLOW.md 第 4 步寫一支 gnuplot 腳本畫成＿＿圖，放進論文的 Results，跑一次 build。」
 4. 你會看到：`source/gnuplot/` 多一支 `.gp`，PDF 多一張圖。打開 PDF 看：點和線沒有被切掉，數字跟你的 Excel 一樣。
+
+### 想放一張現成的圖（流程圖、照片）
+
+1. 圖存成 **PNG 或 JPG**（PDF 也行，但 Word 版放不進去）。檔名只用英文、數字、`-`、`_`，例如 `flowchart.png`；不能有空白或中文。
+2. 放進 `source/images/`。
+3. 跟 AI 說：「我在 source/images/ 放了 flowchart.png，請照 WORKFLOW.md 第 4 步放進論文的 Methods，圖說寫＿＿，內文提到它，跑一次 build。」
+4. 你會看到：AI 回報 build 把它複製到 `output/images/`，最後一行 `BUILD OK`，PDF 多了這張圖。
+- 照片裡有人臉、病歷、姓名，先去識別化再放（看第八節的四個條件）。
+- 要換圖：用同一個檔名蓋過去，再跑一次 build。
+
+（2026-10-27 實測：一張 PNG 流程圖放進 Methods，`BUILD OK`，PDF 和 Word 版都有；檔名有中文或空白，build 會停下來請你改名；HEIC 這類格式會略過並提示另存成 PNG。）
 
 （2026-10-22 實測：用 Excel 做表和畫圖資料、照上面存檔放進去，build 都 `BUILD OK`，PDF 和 Word 版都有；表裡有中文、檔案不是 UTF-8、檔名撞到的三種情況，build 都會停下來說怎麼改。）
 

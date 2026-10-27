@@ -102,6 +102,7 @@ B 和 C 都要老師先在 Zotero：設定 → 進階，勾「允許此電腦上
   3. y 軸用 `set autoscale y` 加 `set offsets`，不要寫死範圍，換資料才不會把點切掉。
      - 例外：**長條圖的 y 軸要從 0 開始**，寫 `set yrange [0:*]`（0 起、上限跟著資料走）。刻度太密就改 `set ytics 10`（或 20）。
   4. `source/paper/main.tex` 用 `\input{figures/figN.tex}` 放進 figure 環境，加 `\caption` 和 `\label`，內文用 `\ref` 提到它。
+  5. **老師給的現成圖片**（流程圖、照片）放在 `source/images/`，build 原樣複製到 `output/images/`。不用寫 `.gp`，在 figure 環境裡寫 `\includegraphics[width=\linewidth]{images/檔名}`，一樣加 `\caption`、`\label`、內文 `\ref`。不改、不轉檔老師的圖；檔名有空白或中文，build 會停下來，請老師自己改名。
   5. 跑 build。
 - 為什麼用 gnuplot：`cairolatex` 輸出時，圖上的字交給 LaTeX 排，跟內文同一套字型；配色用色盲也分得出的藍（#0072B2）和橘（#D55E00）。
 - 怎麼驗證：打開 PDF 看：點和誤差線沒有被切掉、圖例沒蓋到資料、數字跟表格對得上。

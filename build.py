@@ -3,10 +3,11 @@
 平常不用自己打：跟 AI 說「跑一次 build」，AI 會執行這支。
 
 原料都在 source/（資料、書目、分析程式、gnuplot 腳本、論文本文；你用 Excel 做的表放 source/tables/、
-畫圖資料放 source/figdata/，都存成「CSV UTF-8」），成品都寫到 output/：
+畫圖資料放 source/figdata/，都存成「CSV UTF-8」；現成的圖片檔，例如流程圖、照片，放 source/images/），成品都寫到 output/：
     output/numbers.tex   內文數字        output/tables/    表（.tex 給 PDF、.csv 給 Excel）
     output/figdata/      畫圖用的資料表  output/figures/   gnuplot 畫好的圖
     output/main.pdf      論文            output/latex-log/ 排版過程的紀錄
+    output/images/       你放的圖片檔（從 source/images/ 複製過來）
 output/ 裡的東西每次 build 都會重做，不要手改；要改就改 source/。
 
 用法（在這個資料夾裡；Windows、Mac 都一樣）：
@@ -34,11 +35,12 @@ MAIN_TEX = SRC / "paper" / "main.tex"
 REFS = SRC / "refs" / "refs.bib"
 OUT = ROOT / "output"
 LOGDIR = OUT / "latex-log"
-REBUILT = ["numbers.tex", "tables", "figdata", "figures", "latex-log", "main.pdf"]  # 每次重做的東西
+REBUILT = ["numbers.tex", "tables", "figdata", "figures", "images", "latex-log", "main.pdf"]  # 每次重做的東西
 TEX_SCRATCH = ["main.tex", "refs.bib", "main.aux", "main.bbl", "main.blg", "main.log", "main.out", "main.spl"]
 STD_TYPES = {"article", "book", "booklet", "inbook", "incollection", "inproceedings", "conference", "manual",
              "mastersthesis", "phdthesis", "proceedings", "techreport", "unpublished", "misc", "online"}
 ENGINES = {"pdflatex", "xelatex", "lualatex"}
+IMG_EXT = {".png", ".jpg", ".jpeg", ".pdf"}  # LaTeX 直接放得進去的圖片格式
 CJK = re.compile(r"[\u2e80-\u9fff\uf900-\ufaff\uff00-\uffef]")
 
 # 英文版 Windows 的輸出編碼（cp1252）印不出中文：改用 UTF-8，不要整支程式停掉
@@ -175,6 +177,25 @@ def excel_inputs(eng):
             else:
                 print(f"  {f.name} → output/figdata/{f.name}（gnuplot 腳本讀 figdata/{f.name}）")
             shutil.copy(f, target)
+
+
+def images():
+    """老師放的現成圖片（流程圖、照片）：source/images/ 複製到 output/images/，論文用 \\includegraphics{images/檔名} 放進去。"""
+    d = SRC / "images"
+    files = sorted(f for f in d.iterdir() if f.is_file() and f.name != "README.md") if d.is_dir() else []
+    if not files:
+        return
+    step("1c/5 你放的圖片檔（source/images/ → output/images/）")
+    (OUT / "images").mkdir(parents=True, exist_ok=True)
+    for f in files:
+        if f.suffix.lower() not in IMG_EXT:
+            print(f"  略過 {f.name}：只認 PNG、JPG、PDF。其他格式（例如 HEIC、TIFF、Word 裡的圖）請先另存成 PNG。")
+            continue
+        if not re.fullmatch(r"[A-Za-z0-9_-]+\.[A-Za-z]+", f.name):
+            fail(f"source/images/{f.name}：檔名只能用英文字母、數字、- 和 _（不能有空白或中文），例如 flowchart.png。改好檔名再跑一次。")
+        shutil.copy(f, OUT / "images" / f.name)
+        word = "（Word 版放不進 PDF 格式的圖；要出 Word，請另存成 PNG）" if f.suffix.lower() == ".pdf" else ""
+        print(f"  {f.name} → output/images/{f.name}；論文裡用 \\includegraphics[width=\\linewidth]{{images/{f.name}}} 放進去{word}")
 
 
 def figures(fmt="latex"):
@@ -392,6 +413,7 @@ def main():
             print("（清掉了上次的 output/main.docx：這次沒有加 --docx，舊的 Word 檔數字會是舊的。）")
         analysis()
         excel_inputs(eng)
+        images()
         figures()
         n_refs, n_nodoi = check_refs(eng)
         pages, n_warn = latex(eng)

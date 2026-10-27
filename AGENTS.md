@@ -29,6 +29,7 @@ source/                  原料：要改論文，就改這裡
   gnuplot/*.gp           gnuplot 畫圖腳本，一張圖一個檔
   tables/*.csv           （選用）老師用 Excel 做的表，build 自動轉成 output/tables/同名.tex；不改它
   figdata/*.csv          （選用）老師用 Excel 做的畫圖資料，build 複製到 output/figdata/；不改它
+  images/                （選用）老師放的現成圖片（流程圖、照片；PNG、JPG、PDF），build 複製到 output/images/；不改它
   paper/main.tex         論文本文（LaTeX）
   paper/*.cls、*.bst      期刊官方範本檔（範例＝Springer Nature 的 sn-jnl.cls、sn-vancouver-num.bst）；build 自動帶去排版，不改它
 output/                  成品：build.py 每次重做，不手改，不推上 GitHub
@@ -36,6 +37,7 @@ output/                  成品：build.py 每次重做，不手改，不推上 
   tables/                表：.tex 給 PDF、.csv 給 Excel
   figdata/               畫圖用的資料表（CSV）
   figures/               畫好的圖
+  images/                老師的圖片（從 source/images/ 複製）
   main.pdf、main.docx    論文
 tools/                   工具：new_paper.py（開新論文：現在的 source/ 收進 examples/、換上骨架）、
                          make_practice_data.py（重建練習資料）、zotero_export.py（從 Zotero 匯出書目）

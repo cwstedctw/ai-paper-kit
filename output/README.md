@@ -10,6 +10,7 @@
 | `tables/` | 論文的表：`.tex` 放進 PDF，`.csv` 可以用 Excel 打開核對 | `analyze.py` |
 | `figdata/` | 畫圖用的資料表（CSV，也能用 Excel 打開） | `analyze.py` |
 | `figures/` | 畫好的圖（PDF 版和 PNG 版） | `source/gnuplot/*.gp` |
+| `images/` | 你放的圖片檔（流程圖、照片），從 `source/images/` 原樣複製 | `build.py` |
 | `latex-log/` | 排版過程的紀錄；出錯時 AI 會來這裡看 | LaTeX |
 
 要在 Word 裡改 `main.docx`，先另存到別的資料夾（例如桌面），因為下次產生 Word 版會蓋掉這一份。
